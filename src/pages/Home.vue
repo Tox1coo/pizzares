@@ -3,6 +3,7 @@
     <div class="container">
       <CategoryList :categoryList="categoryList"></CategoryList>
       <StocksList></StocksList>
+      <FormCity></FormCity>
     </div>
   </div>
 </template>
@@ -19,14 +20,20 @@ export default {
       data: 0,
     };
   },
-  mounted() {
+  created() {
     this.fetchCategory();
     this.fetchCity();
+  },
+  mounted() {
+    setTimeout(() => {
+      this.fetchCategoryImage(this.categoryList);
+    }, 650);
   },
   methods: {
     ...mapActions({
       fetchCity: "city/fetchCity",
       fetchCategory: "category/fetchCategory",
+      fetchCategoryImage: "category/fetchCategoryImage",
     }),
   },
   computed: {

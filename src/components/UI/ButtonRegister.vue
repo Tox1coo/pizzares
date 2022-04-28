@@ -26,7 +26,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "ButtonRegister",
+};
 </script>
 
 <style scoped lang="scss">

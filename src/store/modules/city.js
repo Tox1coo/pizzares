@@ -16,7 +16,7 @@ export const cityList = {
     async fetchCity({ commit }) {
       const storageData = ref(getDatabase());
 
-      get(child(storageData, `0/0/cityName`))
+      get(child(storageData, `0/cityName`))
         .then((snapshot) => {
           if (snapshot.exists()) {
             commit("setCityList", snapshot.val());

@@ -1,14 +1,14 @@
 <template>
   <div class="category__item">
-    <img :src="require(`@/assets/${categoryName}.png`)" alt="" />
-    {{ categoryName }}
+    <img :src="`${categoryName.image}`" alt="" />
+    {{ categoryName.name }}
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    categoryName: String,
+    categoryName: Object,
   },
 };
 </script>
