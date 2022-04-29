@@ -26,11 +26,13 @@ export default {
   border-radius: 8px;
   margin-top: 30px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
 
   label {
-    margin-right: 32px;
+    margin-right: 16px;
+    font-size: 18px;
   }
 }
 

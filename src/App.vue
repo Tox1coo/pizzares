@@ -17,7 +17,7 @@ export default {
 </script>
 <style lang="scss">
 .container {
-  width: 1260px;
+  width: 1320px;
   padding: 0px 15px;
   margin: 0 auto;
 }

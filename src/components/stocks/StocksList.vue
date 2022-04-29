@@ -15,18 +15,13 @@ import stocks from "@/assets/stocks/stocks";
 
 import StocksItem from "@/components/stocks/StocksItem";
 export default {
-  // eslint-disable-next-line vue/no-unused-components
   components: { StocksItem },
   data() {
     return {
       stocksList: [],
     };
   },
-  /*   props: {
-    stocksList: {
-      type: Array,
-    },
-  }, */
+
   mounted() {
     this.stocksList = stocks;
   },

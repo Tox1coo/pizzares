@@ -53,6 +53,7 @@ input {
 
 .location {
   position: relative;
-  left: -765px;
+  left: -785px;
+  top: -1px;
 }
 </style>

@@ -4,6 +4,7 @@ import ButtonRegister from "@/components/UI/ButtonRegister";
 import MyButton from "@/components/UI/MyButton";
 import FormCity from "@/components/UI/FormCity";
 import InputCity from "@/components/UI/InputCity";
+import FilterButton from "@/components/UI/FilterButton";
 
 export default [
   NavBar,
@@ -12,4 +13,5 @@ export default [
   MyButton,
   FormCity,
   InputCity,
+  FilterButton,
 ];

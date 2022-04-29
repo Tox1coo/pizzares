@@ -1,31 +1,35 @@
 /* eslint-disable no-unused-vars */
+
 import { getDatabase, ref, get, child, onValue } from "firebase/database";
 import { firebaseConfig } from "@/store/config";
 import * as storageGlobal from "firebase/storage";
 
-export const categoryList = {
-  state: () => ({
-    categoryList: [],
-    categoryForProducts: [],
+export const products = {
+  store: () => ({
+    productList: [],
+    isLoading: false,
   }),
+
+  getters: {
+    getProductListinCategory: (state) =>
+      function (field) {
+        return state.productList.filter((elem) => elem.category === field);
+      },
+  },
+
   mutations: {
-    setCategoryList(state, categoryList) {
-      state.categoryList = categoryList;
-    },
-    setCategoryForProducts(state, categoryForProducts) {
-      state.categoryForProducts = categoryForProducts;
+    setProductList(state, productList) {
+      state.productList = productList;
     },
   },
 
   actions: {
-    async fetchCategory({ state, commit }) {
+    async fetchProducts({ state, commit }) {
       const storageData = ref(getDatabase());
-      get(child(storageData, `1/categoryList`))
+      get(child(storageData, `2/productList`))
         .then((snapshot) => {
           if (snapshot.exists()) {
-            commit("setCategoryList", snapshot.val());
-            const data = state.categoryList.filter((c) => c.name !== "Акции");
-            commit("setCategoryForProducts", data);
+            commit("setProductList", snapshot.val());
           } else {
             console.log("No data available");
           }
@@ -33,19 +37,15 @@ export const categoryList = {
         .catch((error) => {
           console.error(error);
         });
-
-      let data = [];
     },
-    async fetchCategoryImage({ commit }, category) {
+    async fetchProductImage({ commit }, product) {
       const storageData = ref(getDatabase());
       const storage = storageGlobal.getStorage();
 
-      category.forEach((categoryItem) => {
+      product.forEach((categoryItem) => {
         let name = categoryItem.name;
-        const starsRef = storageGlobal.ref(
-          storage,
-          `categoryImage/${name}.png`
-        );
+        console.log(categoryItem);
+        const starsRef = storageGlobal.ref(storage, `productImage/${name}.png`);
         storageGlobal
           .getDownloadURL(starsRef)
           .then((url) => {
@@ -55,10 +55,11 @@ export const categoryList = {
             console.error(error);
           })
           .finally(() => {
-            commit("setCategoryList", category);
+            commit("setProductList", product);
           });
       });
     },
   },
+
   namespaced: true,
 };
