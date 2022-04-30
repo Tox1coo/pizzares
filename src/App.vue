@@ -1,10 +1,8 @@
 <template>
   <NavBar :currentCity="currentCity" />
 
-  <div id="app">
-    <div class="container">
-      <router-view />
-    </div>
+  <div class="container">
+    <router-view />
   </div>
 </template>
 

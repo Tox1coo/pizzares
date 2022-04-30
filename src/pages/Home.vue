@@ -1,13 +1,21 @@
 <template>
-  <CategoryList :categoryList="categoryList"></CategoryList>
-  <StocksList></StocksList>
-  <FormCity></FormCity>
-  <ListProducts
-    v-for="category in categoryForProducts"
-    :key="category.name"
-    :productList="getProductList(category.name)"
-    :categoryName="category.name"
-  ></ListProducts>
+  <div v-if="isLoading" class="main">
+    <CategoryList :categoryList="categoryList"></CategoryList>
+    <StocksList></StocksList>
+    <FormCity></FormCity>
+    <ListProducts
+      v-for="category in category"
+      :key="category"
+      :productList="getProductList(category)"
+      :categoryName="category"
+      :filter="getFilterList(category)"
+      v-model:showFilter="showFilter"
+    ></ListProducts>
+    <Filter
+      v-model:show="showFilter"
+      :filterList="getProductsListBeforeFilter"
+    ></Filter>
+  </div>
 </template>
 
 <script>
@@ -15,13 +23,14 @@ import { mapActions, mapState, mapGetters } from "vuex";
 import CategoryList from "@/components/category/CategoryList";
 import StocksList from "@/components/stocks/StocksList";
 import ListProducts from "@/components/products/ListProducts";
+import Filter from "@/components/Filter";
 
 export default {
   name: "Home",
-  components: { CategoryList, StocksList, ListProducts },
-  date() {
+  components: { CategoryList, StocksList, ListProducts, Filter },
+  data() {
     return {
-      data: 0,
+      showFilter: false,
     };
   },
   created() {
@@ -33,7 +42,7 @@ export default {
     setTimeout(() => {
       this.fetchCategoryImage(this.categoryList);
       this.fetchProductImage(this.productList);
-    }, 650);
+    }, 750);
   },
   methods: {
     ...mapActions({
@@ -46,20 +55,25 @@ export default {
       fetchProducts: "product/fetchProducts",
     }),
     getProductList(category) {
-      console.log(category);
       return this.getProductListinCategory(category);
+    },
+    getFilterList(category) {
+      return this.getFilterProductList(category);
     },
   },
   computed: {
     ...mapState({
       categoryList: (state) => state.category.categoryList,
-      categoryForProducts: (state) => state.category.categoryForProducts,
 
+      category: (state) => state.product.category,
       productList: (state) => state.product.productList,
       isLoading: (state) => state.product.isLoading,
+      filterProduct: (state) => state.product.filterProduct,
     }),
     ...mapGetters({
       getProductListinCategory: "product/getProductListinCategory",
+      getFilterProductList: "product/getFilterProductList",
+      getProductsListBeforeFilter: "product/getProductsListBeforeFilter",
     }),
   },
 };

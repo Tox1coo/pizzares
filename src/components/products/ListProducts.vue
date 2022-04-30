@@ -3,6 +3,7 @@
     <div class="products__header">
       <h2>{{ categoryName }}</h2>
       <FilterButton
+        @click="$emit('update:showFilter', true), setFilterList(categoryName)"
         v-if="categoryName == 'Пицца' || categoryName == 'Суши'"
       ></FilterButton>
     </div>
@@ -13,11 +14,17 @@
         :productItem="productItem"
       ></ProductsItem>
     </div>
+    <!--     <button @click="getProductsListBeforeFilter(['Куриная грудка', 'Бекон'])">
+      dasdsad
+    </button> -->
+    {{ productList[1]?.type }}
   </div>
 </template>
 
 <script>
 import ProductsItem from "@/components/products/ProductsItem";
+import { mapMutations } from "vuex";
+
 export default {
   components: { ProductsItem },
   props: {
@@ -25,10 +32,27 @@ export default {
       type: Array,
       required: true,
     },
+    filter: {
+      type: Object,
+    },
     categoryName: {
       type: String,
       required: true,
     },
+    showFilter: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    ...mapMutations({
+      setFilterList: "product/setFilterList",
+    }),
+  },
+  computed: {
+    /*     ...mapGetters({
+      getProductsListBeforeFilter: "product/getProductsListBeforeFilter",
+    }), */
   },
 };
 </script>
@@ -45,6 +69,10 @@ export default {
   &__header {
     display: flex;
     justify-content: space-between;
+    h2 {
+      font-size: 40px;
+    }
   }
 }
 </style>
+@click=" visibleFilter, getProductsListBeforeFilter(filter[0].filterProduct) "

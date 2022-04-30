@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent class="form" action="">
     <label for="">Проверить адрес доставки</label>
-    <InputCity :placeholder="Адрес" v-model="currentCity"></InputCity>
+    <InputCity v-model="currentCity"></InputCity>
     <MyButton class="btn">Проверить</MyButton>
   </form>
 </template>

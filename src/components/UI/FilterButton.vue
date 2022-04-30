@@ -12,7 +12,7 @@
         fill="#FF7010"
       />
     </svg>
-    Фильтры
+    <span>Фильтры </span>
   </button>
 </template>
 
@@ -22,4 +22,20 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.filter-btns {
+  cursor: pointer;
+  padding: 9px 16px;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  background: none;
+  background-color: #fff;
+  font-size: 16px;
+  line-height: 26px;
+  display: flex;
+  align-items: center;
+  span {
+    margin-left: 5px;
+  }
+}
+</style>

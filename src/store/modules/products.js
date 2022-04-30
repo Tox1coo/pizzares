@@ -7,6 +7,9 @@ import * as storageGlobal from "firebase/storage";
 export const products = {
   store: () => ({
     productList: [],
+    filterProduct: [],
+    category: [],
+    filterList: "Пицца",
     isLoading: false,
   }),
 
@@ -15,21 +18,69 @@ export const products = {
       function (field) {
         return state.productList.filter((elem) => elem.category === field);
       },
+    getFilterProductList: (state) =>
+      function (field) {
+        return state.filterProduct.filter((elem) => elem.productName === field);
+      },
+    getProductsListBeforeFilter(state) {
+      return state.filterProduct.filter(
+        (elem) => elem.productName === state.filterList
+      );
+    },
   },
 
   mutations: {
     setProductList(state, productList) {
       state.productList = productList;
     },
+    setCategory(state, category) {
+      state.category = category;
+    },
+    setIsLoading(state, isLoading) {
+      state.isLoading = isLoading;
+    },
+    setFilterProduct(state, filterProduct) {
+      state.filterProduct = filterProduct;
+    },
+    setFilterList(state, filterList) {
+      state.filterList = filterList;
+    },
   },
 
   actions: {
     async fetchProducts({ state, commit }) {
       const storageData = ref(getDatabase());
+      get(child(storageData, `2/filter`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            commit("setFilterProduct", snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
       get(child(storageData, `2/productList`))
         .then((snapshot) => {
           if (snapshot.exists()) {
             commit("setProductList", snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          commit("setIsLoading", true);
+        });
+
+      get(child(storageData, `2/Category`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            commit("setCategory", snapshot.val());
           } else {
             console.log("No data available");
           }
@@ -44,7 +95,6 @@ export const products = {
 
       product.forEach((categoryItem) => {
         let name = categoryItem.name;
-        console.log(categoryItem);
         const starsRef = storageGlobal.ref(storage, `productImage/${name}.png`);
         storageGlobal
           .getDownloadURL(starsRef)
