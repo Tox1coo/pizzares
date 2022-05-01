@@ -3,8 +3,10 @@
     <h5 class="title">{{ filter.name }}</h5>
     <div class="filter-block-btns">
       <FilterButtons
-        v-for="(btn, index) in filter.structurу"
-        :key="index"
+        @addFilter="add"
+        @click="$emit('addFilter', btn)"
+        v-for="btn in filter.structurу"
+        :key="btn"
         :filterItem="btn"
       ></FilterButtons>
     </div>
@@ -16,9 +18,17 @@ import FilterButtons from "@/components/FilterButtons";
 
 export default {
   components: { FilterButtons },
+  data() {
+    return { active: false, allFilter: [] };
+  },
   props: {
     filter: {
       type: Object,
+    },
+  },
+  methods: {
+    add(item, active) {
+      this.$emit("allActiveFilter", item, active);
     },
   },
 };
@@ -37,7 +47,7 @@ export default {
   &-btns {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 8xpx;
   }
 }
 </style>

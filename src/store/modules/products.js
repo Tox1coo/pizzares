@@ -8,6 +8,7 @@ export const products = {
   store: () => ({
     productList: [],
     filterProduct: [],
+    copyProductList: [],
     category: [],
     filterList: "Пицца",
     isLoading: false,
@@ -45,6 +46,9 @@ export const products = {
     setFilterList(state, filterList) {
       state.filterList = filterList;
     },
+    setCopyProductList(state, copyProductList) {
+      state.copyProductList = copyProductList;
+    },
   },
 
   actions: {
@@ -66,6 +70,7 @@ export const products = {
         .then((snapshot) => {
           if (snapshot.exists()) {
             commit("setProductList", snapshot.val());
+            commit("setCopyProductList", snapshot.val());
           } else {
             console.log("No data available");
           }
@@ -106,6 +111,7 @@ export const products = {
           })
           .finally(() => {
             commit("setProductList", product);
+            commit("setCopyProductList", product);
           });
       });
     },

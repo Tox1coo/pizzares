@@ -10,14 +10,10 @@
     <div class="products__list">
       <ProductsItem
         v-for="productItem in productList"
-        :key="productItem.name"
+        :key="productItem.id"
         :productItem="productItem"
       ></ProductsItem>
     </div>
-    <!--     <button @click="getProductsListBeforeFilter(['Куриная грудка', 'Бекон'])">
-      dasdsad
-    </button> -->
-    {{ productList[1]?.type }}
   </div>
 </template>
 

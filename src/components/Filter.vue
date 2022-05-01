@@ -20,7 +20,9 @@
       <div class="filter__item-btns">
         <MyButton class="filter-btn background">Сбросить </MyButton>
 
-        <MyButton class="filter-btn">Применить </MyButton>
+        <MyButton @click="getFilterList(), hideDialog()" class="filter-btn"
+          >Применить
+        </MyButton>
       </div>
     </div>
   </div>

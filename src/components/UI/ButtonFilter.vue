@@ -1,6 +1,6 @@
 <template>
   <button
-    @click="isActive = !isActive"
+    @click="(isActive = !isActive), $emit('active', isActive)"
     :class="{ active: isActive }"
     class="filter__btn"
   >
@@ -15,6 +15,9 @@ export default {
     return {
       isActive: false,
     };
+  },
+  props: {
+    active: Boolean,
   },
 };
 </script>
