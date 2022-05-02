@@ -1,10 +1,10 @@
 <template>
-  <div class="out" @click.stop="hideDialog">
+  <div class="out" @click.stop="hideFilter">
     <div class="filter" @click.stop v-show="show">
       <div class="filter__item head">
         <h2>Фильтры</h2>
         <div class="head__item">
-          <div @click="hideDialog" class="close">
+          <div @click="hideFilter" class="close">
             <span></span>
             <span></span>
           </div>
@@ -12,15 +12,21 @@
       </div>
       <div class="filter__item-desc">
         <FilterBlocks
-          v-for="filter in filterList"
-          :key="filter"
+          v-for="(filter, index) in filterList"
+          :key="index"
           :filterBlock="filter"
+          @getActiveFilter="allActiveFilter"
+          @setActive="getActive"
+          :active="active"
+          :allFilters="allFilter"
         ></FilterBlocks>
       </div>
       <div class="filter__item-btns">
-        <MyButton class="filter-btn background">Сбросить </MyButton>
+        <MyButton @click="clearFilter" class="filter-btn background"
+          >Сбросить
+        </MyButton>
 
-        <MyButton @click="getFilterList(), hideDialog()" class="filter-btn"
+        <MyButton @click="checkProduct(), hideFilter()" class="filter-btn"
           >Применить
         </MyButton>
       </div>
@@ -30,6 +36,8 @@
 
 <script>
 import FilterBlocks from "@/components/FilterBlocks";
+import { mapState, mapMutations } from "vuex";
+
 export default {
   components: { FilterBlocks },
   props: {
@@ -38,19 +46,69 @@ export default {
       type: Array,
     },
   },
+  emits: ["update:show"],
+  data() {
+    return {
+      allFilter: [],
+      productName: "",
+      active: true,
+    };
+  },
   methods: {
-    hideDialog() {
+    ...mapMutations({ setProductList: "product/setProductList" }),
+    clearFilter() {
+      this.setProductList(this.copyProductList);
+      this.active = false;
+      this.allFilter = [];
+    },
+    hideFilter() {
       this.$emit("update:show", false);
     },
-    getFilterList() {
-      return this.filterList[0].filterProduct;
+    allActiveFilter(item, active, allFilter, productName) {
+      this.allFilter = allFilter;
+      this.productName = productName;
     },
+    checkProduct() {
+      console.log(this.allFilter);
+      let copyProduct;
+      const allId = [];
+      if (this.allFilter.length > 0) {
+        copyProduct = this.copyProductList.filter((item) => {
+          if (
+            item.category === this.productName &&
+            this.allFilter.length != 0
+          ) {
+            const item2 = item?.structurу;
+            return !this.allFilter.every((filter) => item2.includes(filter));
+          }
+        });
+        copyProduct.forEach((element) => {
+          allId.push(element.id);
+        });
+        const filter = this.copyProductList.filter((item) =>
+          allId.every((filter) => item.id != filter)
+        );
+        this.setProductList(filter);
+      } else {
+        this.setProductList(this.copyProductList);
+      }
+    },
+    getActive(active) {
+      this.active = active;
+    },
+  },
+  computed: {
+    ...mapState({
+      productList: (state) => state.product.productList,
+      copyProductList: (state) => state.product.copyProductList,
+    }),
   },
 };
 </script>
 
 <style scoped lang="scss">
 .filter {
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   width: 500px;
@@ -82,6 +140,8 @@ export default {
   border: 1px solid #ff7010;
 }
 .out {
+  z-index: 1000;
+
   min-width: 100%;
   position: fixed;
   display: flex;

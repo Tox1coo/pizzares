@@ -38,7 +38,6 @@ export default {
   max-height: 480px;
   min-width: 300px;
   max-width: 300px;
-  margin-top: 30px;
   border: 1px solid #f0f0f0;
   background-color: #fff;
   border-radius: 12px;

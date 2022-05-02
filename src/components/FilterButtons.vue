@@ -1,5 +1,11 @@
 <template>
-  <ButtonFilter @active="getActive"> {{ filterItem }}</ButtonFilter>
+  <ButtonFilter
+    @setActive="$emit('setActive', true)"
+    :active="activeBtn"
+    @active="getActive"
+  >
+    {{ filterItem }}</ButtonFilter
+  >
 </template>
 
 <script>
@@ -7,11 +13,12 @@ export default {
   data() {
     return { active: false };
   },
-
+  emits: ["addFilter", "setActive"],
   props: {
     filterItem: {
       type: String,
     },
+    activeBtn: Boolean,
   },
   methods: {
     getActive(active) {

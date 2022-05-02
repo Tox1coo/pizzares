@@ -8,13 +8,7 @@
       :key="category"
       :productList="getProductList(category)"
       :categoryName="category"
-      :filter="getFilterList(category)"
-      v-model:showFilter="showFilter"
     ></ListProducts>
-    <Filter
-      v-model:show="showFilter"
-      :filterList="getProductsListBeforeFilter"
-    ></Filter>
   </div>
 </template>
 
@@ -23,16 +17,11 @@ import { mapActions, mapState, mapGetters } from "vuex";
 import CategoryList from "@/components/category/CategoryList";
 import StocksList from "@/components/stocks/StocksList";
 import ListProducts from "@/components/products/ListProducts";
-import Filter from "@/components/Filter";
 
 export default {
   name: "Home",
-  components: { CategoryList, StocksList, ListProducts, Filter },
-  data() {
-    return {
-      showFilter: false,
-    };
-  },
+  components: { CategoryList, StocksList, ListProducts },
+
   created() {
     this.fetchCategory();
     this.fetchCity();

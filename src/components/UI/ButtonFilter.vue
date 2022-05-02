@@ -1,7 +1,7 @@
 <template>
   <button
-    @click="(isActive = !isActive), $emit('active', isActive)"
-    :class="{ active: isActive }"
+    @click="changeBtn"
+    :class="{ active: isActive && active }"
     class="filter__btn"
   >
     <slot></slot>
@@ -16,8 +16,25 @@ export default {
       isActive: false,
     };
   },
+  watch: {
+    active(newQuestion) {
+      if (newQuestion === false) {
+        this.isActive = false;
+      }
+    },
+  },
+
+  emits: ["active", "setActive"],
   props: {
     active: Boolean,
+  },
+  methods: {
+    changeBtn() {
+      this.$emit("setActive", true);
+
+      this.isActive = !this.isActive;
+      this.$emit("active", this.isActive);
+    },
   },
 };
 </script>

@@ -7,6 +7,8 @@
         @click="$emit('addFilter', btn)"
         v-for="btn in filter.structurу"
         :key="btn"
+        :activeBtn="activeBtn"
+        @setActive="$emit('setActive', true)"
         :filterItem="btn"
       ></FilterButtons>
     </div>
@@ -21,10 +23,13 @@ export default {
   data() {
     return { active: false, allFilter: [] };
   },
+  emits: ["setActive", "allActiveFilter", "addFilter"],
+
   props: {
     filter: {
       type: Object,
     },
+    activeBtn: Boolean,
   },
   methods: {
     add(item, active) {
@@ -47,7 +52,7 @@ export default {
   &-btns {
     display: flex;
     flex-wrap: wrap;
-    gap: 8xpx;
+    gap: 8px;
   }
 }
 </style>

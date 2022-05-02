@@ -4,13 +4,13 @@
     :key="filter.name"
     :filter="filter"
     @allActiveFilter="getAciveFilter"
+    :activeBtn="active"
+    @setActive="$emit('setActive', true)"
   ></FilterBlock>
-  <button @click="checkProduct()">Проверка</button>
 </template>
 
 <script>
 import FilterBlock from "@/components/FilterBlock";
-import { mapState, mapMutations } from "vuex";
 
 export default {
   components: { FilterBlock },
@@ -19,16 +19,26 @@ export default {
       allFilter: [],
     };
   },
+  emits: ["getActiveFilter", "setActive"],
+
   props: {
     filterBlock: {
       type: Object,
     },
+    active: Boolean,
+    allFilters: {
+      type: Array,
+    },
+  },
+  watch: {
+    allFilters(newAllFilter) {
+      console.log(newAllFilter);
+      if (newAllFilter.length === 0) {
+        this.allFilter = [];
+      }
+    },
   },
   methods: {
-    ...mapMutations({
-      setProductList: "product/setProductList",
-    }),
-
     getAciveFilter(item, active) {
       if (active === false) {
         const index = this.allFilter.indexOf(item);
@@ -38,38 +48,14 @@ export default {
       } else {
         this.allFilter.push(item);
       }
+      this.$emit(
+        "getActiveFilter",
+        item,
+        active,
+        this.allFilter,
+        this.filterBlock.productName
+      );
     },
-
-    checkProduct() {
-      let copyProduct;
-      const allId = [];
-      if (this.allFilter.length > 0) {
-        copyProduct = this.copyProductList.filter((item) => {
-          if (
-            item.category === this.filterBlock.productName &&
-            this.allFilter.length != 0
-          ) {
-            const item2 = item?.structurу;
-            return !this.allFilter.every((filter) => item2.includes(filter));
-          }
-        });
-        copyProduct.forEach((element) => {
-          allId.push(element.id);
-        });
-        const item = this.copyProductList.filter((item) =>
-          allId.every((filter) => item.id != filter)
-        );
-        this.setProductList(item);
-      } else {
-        this.setProductList(this.copyProductList);
-      }
-    },
-  },
-  computed: {
-    ...mapState({
-      productList: (state) => state.product.productList,
-      copyProductList: (state) => state.product.copyProductList,
-    }),
   },
 };
 </script>
