@@ -9,8 +9,17 @@
       :productList="getProductList(category)"
       :categoryName="category"
     ></ListProducts>
-    <ModalAuth v-model:show="visibleModalAuth">
-      <LoginUser v-model:visibleModalAuth="visibleModalAuth"></LoginUser>
+    <ModalAuth v-model:show="show">
+      <LoginUser
+        v-model:show="show"
+        v-model:visibleModalLogin="visibleModalLogin"
+        v-if="visibleModalLogin"
+      ></LoginUser>
+      <AuthUser
+        v-model:show="show"
+        v-model:visibleModalLogin="visibleModalLogin"
+        v-else
+      ></AuthUser>
     </ModalAuth>
   </div>
 </template>
@@ -21,13 +30,15 @@ import CategoryList from "@/components/category/CategoryList";
 import StocksList from "@/components/stocks/StocksList";
 import ListProducts from "@/components/products/ListProducts";
 import LoginUser from "@/components/user/LoginUser";
+import AuthUser from "@/components/user/AuthUser";
 
 export default {
   name: "Home",
-  components: { CategoryList, StocksList, ListProducts, LoginUser },
+  components: { CategoryList, StocksList, ListProducts, LoginUser, AuthUser },
   data() {
     return {
-      visibleModalAuth: false,
+      show: false,
+      visibleModalLogin: true,
     };
   },
   created() {
@@ -82,9 +93,9 @@ export default {
   },
   watch: {
     visibleModal(visible) {
-      this.visibleModalAuth = visible;
+      this.show = visible;
     },
-    visibleModalAuth(notVisible) {
+    show(notVisible) {
       this.setVisibleModal(notVisible);
     },
   },

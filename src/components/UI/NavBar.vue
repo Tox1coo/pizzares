@@ -31,7 +31,28 @@
               <ButtonRegister v-if="isAuth == false" @click="check(true)"
                 >Войти в аккаунт</ButtonRegister
               >
-              <ButtonRegister v-else>UserName</ButtonRegister>
+              <ButtonRegister
+                @click="visibleUserParams = !visibleUserParams"
+                v-else
+                >UserName</ButtonRegister
+              >
+              <div
+                v-if="visibleUserParams == true"
+                class="panel__right-user user"
+              >
+                <div class="user__bonus">
+                  <p>100 бонусов</p>
+                  <hr />
+                </div>
+                <div class="user__params">
+                  <a @click="$router.push('/orders')">История заказов</a>
+                  <a @click="$router.push('/setting')">Настройки</a>
+                  <hr />
+                </div>
+                <div class="user__exit">
+                  <span @click="setIsAuth(false)">Выход из аккаунта</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -93,6 +114,7 @@ export default {
       currentCity: "Москва",
       sum: 10,
       visibleModalIsAuth: false,
+      visibleUserParams: false,
     };
   },
   components: { CityList, ButtonRegister, MyButton },
@@ -100,6 +122,7 @@ export default {
   methods: {
     ...mapMutations({
       setVisibleModal: "auth/setVisibleModal",
+      setIsAuth: "auth/setIsAuth",
     }),
     rotateCityName(cityItem) {
       this.currentCity = cityItem;
@@ -171,10 +194,77 @@ hr {
   &__right {
     display: flex;
     align-items: center;
-
+    position: relative;
     span {
       margin-right: 40px;
     }
+  }
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 208px;
+  width: 285px;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  top: 40px;
+  right: -75px;
+  border-radius: 8px;
+  position: absolute;
+  padding: 16px 20px;
+  &__params {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    a {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    hr {
+      width: 117%;
+      left: -20px;
+      bottom: 0;
+    }
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -20px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid rgba(#ccc, 0.5);
+  }
+
+  &__bonus {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    flex: 1 1 auto;
+    height: 35px;
+    font-weight: 600;
+    font-size: 18px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #ff650e;
+    hr {
+      width: 117%;
+      left: -20px;
+      bottom: 0;
+    }
+  }
+
+  &__exit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 auto;
   }
 }
 </style>

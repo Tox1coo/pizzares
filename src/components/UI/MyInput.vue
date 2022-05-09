@@ -2,6 +2,7 @@
   <div class="form">
     <label :for="typeInput">{{ labelInput }}</label>
     <input
+      required
       :value="modelValue"
       :name="typeInput"
       :type="typeInput"

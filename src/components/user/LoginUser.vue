@@ -1,5 +1,8 @@
 <template>
-  <form @submit.prevent="$emit('update:visibleModalAuth', false)" class="login">
+  <form
+    @submit.prevent="$emit('update:show', false), setIsAuth(true)"
+    class="login"
+  >
     <h2 class="login__title">Вход в аккаунт</h2>
     <p class="login__text">
       Сможете быстро оформлять заказы, использовать бонусы
@@ -17,9 +20,17 @@
       :labelInput="'Пароль:'"
     ></MyInput>
     <MyButton class="login__btn">Войти</MyButton>
-    <MyButton @click.prevent class="login__btn login__btn--autn"
-      >Зарегестрироваться</MyButton
-    >
+
+    <div class="user">
+      <span>Если у вас нет аккаунта: </span>
+      <a
+        href
+        @click.prevent="$emit('update:visibleModalLogin', false)"
+        class="auth__btn"
+        >Зарегестрироваться</a
+      >
+    </div>
+
     <span>
       Продолжая, вы соглашаетесь со сбором и обработкой персональных данных и
       пользовательским соглашением
@@ -28,6 +39,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -36,7 +48,13 @@ export default {
     };
   },
   props: {
-    visibleModalAuth: Boolean,
+    show: Boolean,
+    visibleModalLogin: Boolean,
+  },
+  methods: {
+    ...mapMutations({
+      setIsAuth: "auth/setIsAuth",
+    }),
   },
 };
 </script>
@@ -72,5 +90,13 @@ export default {
     font-size: 32px;
     font-weight: 600;
   }
+  a {
+    color: #ff650e;
+    text-decoration: none;
+    font-size: 18px;
+  }
+}
+.user {
+  margin-top: 5px;
 }
 </style>

@@ -11,6 +11,9 @@ export const auth = {
     setVisibleModal(state, visibleModal) {
       state.visibleModal = visibleModal;
     },
+    setIsAuth(state, isAuth) {
+      state.isAuth = isAuth;
+    },
   },
   actions: {
     async login({ dispatch, commit }, { email, password }) {},
