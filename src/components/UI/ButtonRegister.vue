@@ -1,5 +1,5 @@
 <template>
-  <a @click="$router.push('/register')">
+  <a>
     <svg
       width="20"
       height="20"

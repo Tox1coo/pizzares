@@ -12,6 +12,7 @@
         v-for="productItem in productList"
         :key="productItem.id"
         :productItem="productItem"
+        @visibleDialog="visibleDialog"
       ></ProductsItem>
     </div>
   </div>
@@ -23,17 +24,22 @@
     v-model:show="showFilter"
     :filterList="getProductsListBeforeFilter"
   ></Filter>
+  <ModalProduct
+    v-if="showDialog"
+    :product="productItem"
+    v-model:show="showDialog"
+  ></ModalProduct>
 </template>
 
 <script>
 import ProductsItem from "@/components/products/ProductsItem";
-import { mapMutations, mapGetters } from "vuex";
+import { mapMutations, mapGetters, mapState } from "vuex";
 import Filter from "@/components/Filter";
 
 export default {
   components: { ProductsItem, Filter },
   data() {
-    return { showFilter: false };
+    return { showFilter: false, showDialog: false, productItem: {} };
   },
 
   props: {
@@ -52,8 +58,20 @@ export default {
     ...mapMutations({
       setFilterList: "product/setFilterList",
     }),
+    visibleDialog(product, active) {
+      console.log(this.isAuth);
+      if (this.isAuth != false) {
+        this.productItem = product;
+        this.showDialog = active;
+      } else {
+        alert("Зайдите в аккаунт");
+      }
+    },
   },
   computed: {
+    ...mapState({
+      isAuth: (state) => state.auth.isAuth,
+    }),
     ...mapGetters({
       getProductsListBeforeFilter: "product/getProductsListBeforeFilter",
     }),

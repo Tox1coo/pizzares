@@ -11,6 +11,11 @@ import NavBar from "@/components/UI/NavBar";
 
 export default {
   components: { NavBar },
+  data() {
+    return {
+      currentCity: "",
+    };
+  },
 };
 </script>
 <style lang="scss">

@@ -10,5 +10,4 @@ export default {
       this.$emit("update:show", false);
     },
   },
-  mounted() {},
 };

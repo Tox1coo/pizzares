@@ -27,7 +27,12 @@
           <div class="panel__right">
             <span>Время работы: с 11:00 до 23:00 </span>
 
-            <ButtonRegister>Войти в аккаунт</ButtonRegister>
+            <div class="panel__right-auth">
+              <ButtonRegister v-if="isAuth == false" @click="check(true)"
+                >Войти в аккаунт</ButtonRegister
+              >
+              <ButtonRegister v-else>UserName</ButtonRegister>
+            </div>
           </div>
         </div>
         <hr />
@@ -79,6 +84,7 @@
 import CityList from "@/components/UI/CityList";
 import ButtonRegister from "@/components/UI/ButtonRegister";
 import MyButton from "@/components/UI/MyButton";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "NavBar",
@@ -86,14 +92,27 @@ export default {
     return {
       currentCity: "Москва",
       sum: 10,
+      visibleModalIsAuth: false,
     };
   },
   components: { CityList, ButtonRegister, MyButton },
 
   methods: {
+    ...mapMutations({
+      setVisibleModal: "auth/setVisibleModal",
+    }),
     rotateCityName(cityItem) {
       this.currentCity = cityItem;
     },
+    check(check) {
+      this.setVisibleModal(check);
+    },
+  },
+
+  computed: {
+    ...mapState({
+      isAuth: (state) => state.auth.isAuth,
+    }),
   },
 };
 </script>

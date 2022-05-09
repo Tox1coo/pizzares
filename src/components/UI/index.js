@@ -5,9 +5,12 @@ import MyButton from "@/components/UI/MyButton";
 import FormCity from "@/components/UI/FormCity";
 import InputCity from "@/components/UI/InputCity";
 import FilterButton from "@/components/UI/FilterButton";
-import ModalProducts from "@/components/UI/ModalProducts";
+import ModalProduct from "@/components/UI/ModalProduct";
 import ButtonFilter from "@/components/UI/ButtonFilter";
-
+import TabsList from "@/components/UI/TabsList";
+import TabsItem from "@/components/UI/TabsItem";
+import ModalAuth from "@/components/UI/ModalAuth";
+import MyInput from "@/components/UI/MyInput";
 export default [
   NavBar,
   CityList,
@@ -16,6 +19,10 @@ export default [
   FormCity,
   InputCity,
   FilterButton,
-  ModalProducts,
+  ModalProduct,
   ButtonFilter,
+  TabsList,
+  TabsItem,
+  MyInput,
+  ModalAuth,
 ];

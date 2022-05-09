@@ -10,7 +10,16 @@
       <h3 class="title">{{ productItem.title }}</h3>
       <p class="text">{{ productItem.description }}</p>
       <div class="price__product">
-        <MyButton class="price__btn">Выбрать</MyButton>
+        <MyButton v-if="productItem.category != 'Пицца'" class="price__btn"
+          >Выбрать</MyButton
+        >
+        <MyButton
+          v-else
+          @click="$emit('visibleDialog', productItem, true)"
+          class="price__btn"
+          >Выбрать</MyButton
+        >
+
         <span v-if="productItem.category === 'Пицца'"
           >от {{ productItem.price }} ₽
         </span>

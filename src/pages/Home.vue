@@ -9,19 +9,27 @@
       :productList="getProductList(category)"
       :categoryName="category"
     ></ListProducts>
+    <ModalAuth v-model:show="visibleModalAuth">
+      <LoginUser v-model:visibleModalAuth="visibleModalAuth"></LoginUser>
+    </ModalAuth>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 import CategoryList from "@/components/category/CategoryList";
 import StocksList from "@/components/stocks/StocksList";
 import ListProducts from "@/components/products/ListProducts";
+import LoginUser from "@/components/user/LoginUser";
 
 export default {
   name: "Home",
-  components: { CategoryList, StocksList, ListProducts },
-
+  components: { CategoryList, StocksList, ListProducts, LoginUser },
+  data() {
+    return {
+      visibleModalAuth: false,
+    };
+  },
   created() {
     this.fetchCategory();
     this.fetchCity();
@@ -29,11 +37,16 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.fetchCategoryImage(this.categoryList);
-      this.fetchProductImage(this.productList);
-    }, 750);
+      if (this.isLoading) {
+        this.fetchCategoryImage(this.categoryList);
+        this.fetchProductImage(this.productList);
+      }
+    }, 700);
   },
   methods: {
+    ...mapMutations({
+      setVisibleModal: "auth/setVisibleModal",
+    }),
     ...mapActions({
       fetchCity: "city/fetchCity",
 
@@ -58,12 +71,22 @@ export default {
       productList: (state) => state.product.productList,
       isLoading: (state) => state.product.isLoading,
       filterProduct: (state) => state.product.filterProduct,
+
+      visibleModal: (state) => state.auth.visibleModal,
     }),
     ...mapGetters({
       getProductListinCategory: "product/getProductListinCategory",
       getFilterProductList: "product/getFilterProductList",
       getProductsListBeforeFilter: "product/getProductsListBeforeFilter",
     }),
+  },
+  watch: {
+    visibleModal(visible) {
+      this.visibleModalAuth = visible;
+    },
+    visibleModalAuth(notVisible) {
+      this.setVisibleModal(notVisible);
+    },
   },
 };
 </script>
