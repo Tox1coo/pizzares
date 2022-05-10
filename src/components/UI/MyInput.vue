@@ -2,8 +2,8 @@
   <div class="form">
     <label :for="typeInput">{{ labelInput }}</label>
     <input
-      required
       :value="modelValue"
+      @input="updateInput($event)"
       :name="typeInput"
       :type="typeInput"
       :placeholder="placeholderInput"
@@ -30,6 +30,11 @@ export default {
     labelInput: {
       type: String,
       required: true,
+    },
+  },
+  methods: {
+    updateInput(e) {
+      this.$emit("update:modelValue", e.target.value);
     },
   },
 };

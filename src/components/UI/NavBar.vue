@@ -37,6 +37,7 @@
                 >UserName</ButtonRegister
               >
               <div
+                ref="userName"
                 v-if="visibleUserParams == true"
                 class="panel__right-user user"
               >
@@ -49,8 +50,13 @@
                   <a @click="$router.push('/setting')">Настройки</a>
                   <hr />
                 </div>
-                <div class="user__exit">
-                  <span @click="setIsAuth(false)">Выход из аккаунта</span>
+                <div
+                  @click="
+                    (visibleUserParams = false), setIsAuth(false), logoutUser()
+                  "
+                  class="user__exit"
+                >
+                  <div>Выход из аккаунта</div>
                 </div>
               </div>
             </div>
@@ -105,7 +111,7 @@
 import CityList from "@/components/UI/CityList";
 import ButtonRegister from "@/components/UI/ButtonRegister";
 import MyButton from "@/components/UI/MyButton";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "NavBar",
@@ -124,6 +130,8 @@ export default {
       setVisibleModal: "auth/setVisibleModal",
       setIsAuth: "auth/setIsAuth",
     }),
+    ...mapActions({ logoutUser: "auth/logoutUser" }),
+
     rotateCityName(cityItem) {
       this.currentCity = cityItem;
     },
@@ -202,6 +210,7 @@ hr {
 }
 
 .user {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
