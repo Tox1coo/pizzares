@@ -52,7 +52,7 @@ export const products = {
   },
 
   actions: {
-    async fetchProducts({ state, commit }) {
+    async fetchProducts({ dispatch, state, commit }) {
       const storageData = ref(getDatabase());
       get(child(storageData, `2/filter`))
         .then((snapshot) => {
@@ -71,6 +71,7 @@ export const products = {
           if (snapshot.exists()) {
             commit("setProductList", snapshot.val());
             commit("setCopyProductList", snapshot.val());
+            dispatch("fetchProductImage", state.productList);
           } else {
             console.log("No data available");
           }

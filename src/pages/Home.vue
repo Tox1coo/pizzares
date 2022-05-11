@@ -46,18 +46,11 @@ export default {
     this.fetchCity();
     this.fetchProducts();
   },
-  mounted() {
-    setTimeout(() => {
-      if (this.isLoading) {
-        this.fetchCategoryImage(this.categoryList);
-        this.fetchProductImage(this.productList);
-      }
-    }, 700);
-  },
   methods: {
     ...mapMutations({
       setVisibleModal: "auth/setVisibleModal",
     }),
+
     ...mapActions({
       fetchCity: "city/fetchCity",
 
@@ -67,9 +60,11 @@ export default {
       fetchProductImage: "product/fetchProductImage",
       fetchProducts: "product/fetchProducts",
     }),
+
     getProductList(category) {
       return this.getProductListinCategory(category);
     },
+
     getFilterList(category) {
       return this.getFilterProductList(category);
     },

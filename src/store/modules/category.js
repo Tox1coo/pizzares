@@ -18,12 +18,13 @@ export const categoryList = {
   },
 
   actions: {
-    async fetchCategory({ state, commit }) {
+    async fetchCategory({ dispatch, state, commit }) {
       const storageData = ref(getDatabase());
       get(child(storageData, `1/categoryList`))
         .then((snapshot) => {
           if (snapshot.exists()) {
             commit("setCategoryList", snapshot.val());
+            dispatch("fetchCategoryImage", state.categoryList);
             const data = state.categoryList.filter((c) => c.name !== "Акции");
             commit("setCategoryForProducts", data);
           } else {

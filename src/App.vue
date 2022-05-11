@@ -8,6 +8,7 @@
 
 <script>
 import NavBar from "@/components/UI/NavBar";
+import { mapActions } from "vuex";
 
 export default {
   components: { NavBar },
@@ -15,6 +16,15 @@ export default {
     return {
       currentCity: "",
     };
+  },
+
+  mounted() {
+    this.loggedUser();
+  },
+  methods: {
+    ...mapActions({
+      loggedUser: "auth/loggedUser",
+    }),
   },
 };
 </script>

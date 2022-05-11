@@ -23,8 +23,9 @@
     <span class="error" v-if="v$.password.$error || errorPasswordLang">
       {{ errorPassword }}
     </span>
+    <div v-if="visibleError">{{ messageError }}</div>
 
-    <MyButton class="login__btn">Войти</MyButton>
+    <MyButton ref="login" class="login__btn">Войти</MyButton>
 
     <div class="user">
       <span>Если у вас нет аккаунта: </span>
@@ -46,8 +47,9 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
+import messages from "@/utils/messages";
 
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -57,6 +59,8 @@ export default {
       password: "",
       errorPassword: "",
       errorPasswordLang: false,
+      visibleError: false,
+      messageError: "",
     };
   },
   validations() {
@@ -73,11 +77,12 @@ export default {
   methods: {
     ...mapMutations({
       setIsAuth: "auth/setIsAuth",
+      clearErrorMessage: "auth/clearErrorMessage",
     }),
     ...mapActions({
       login: "auth/login",
     }),
-    submitLogin() {
+    async submitLogin() {
       this.v$.$validate();
       if (!this.v$.$error) {
         if (
@@ -85,11 +90,22 @@ export default {
           this.password.search(/[а-яА-Я]/g) != 0
         ) {
           const userLogin = { email: this.email, password: this.password };
-          this.login(userLogin);
-          console.log(userLogin);
-          this.$emit("update:show", false);
-          this.$emit("update:visibleModalLogin", true);
-          this.setIsAuth(true);
+          await this.login(userLogin);
+
+          if (this.errorMessage === null) {
+            this.$emit("update:show", false);
+            this.$emit("update:visibleModalLogin", true);
+            this.setIsAuth(true);
+            this.clearErrorMessage();
+          } else {
+            for (const key in messages) {
+              if (key === this.errorMessage) {
+                this.messageError = messages[key];
+              }
+            }
+            this.visibleError = true;
+            this.clearErrorMessage();
+          }
         } else {
           this.errorPassword = "Пароль не должен содержать русских символов";
           this.errorPasswordLang = true;
@@ -99,6 +115,10 @@ export default {
         this.errorPasswordLang = false;
       }
     },
+  },
+  computed: {
+    ...mapState({ errorMessage: (state) => state.auth.errorMessage }),
+    ...mapGetters({ getError: "auth/getError" }),
   },
 };
 </script>

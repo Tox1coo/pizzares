@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, child, get } from "firebase/database";
 import { firebaseConfig } from "@/store/config";
 
 import {
@@ -7,13 +7,16 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 export const auth = {
   state: () => ({
     isAuth: false,
-    username: "",
     visigleModal: false,
+    currentUser: null,
+    userInfo: null,
+    errorMessage: null,
   }),
   mutations: {
     setVisibleModal(state, visibleModal) {
@@ -22,48 +25,76 @@ export const auth = {
     setIsAuth(state, isAuth) {
       state.isAuth = isAuth;
     },
+    setCurrentUser(state, currentUser) {
+      state.currentUser = currentUser;
+    },
+    setUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
+    },
+    setErrorMessage(state, errorMessage) {
+      state.errorMessage = errorMessage;
+    },
+    clearErrorMessage(state) {
+      state.errorMessage = null;
+    },
   },
   actions: {
     async login({ dispatch, commit }, { email, password }) {
       const auth = getAuth();
-      console.log(email);
-      console.log(password);
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          console.log(userCredential.user);
-          const db = getDatabase();
-          console.log(db);
 
-          // const user = userCredential.user;
+      await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const db = getDatabase();
+          console.log(auth);
+
+          const dbRef = ref(getDatabase());
+          get(child(dbRef, `3/users/${userCredential.user.uid}`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                console.log(snapshot.val());
+                commit("setUserInfo", snapshot.val());
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {});
+          commit("setCurrentUser", userCredential.user);
         })
         .catch((error) => {
-          /*           const errorCode = error.code;
-          const errorMessage = error.message; */
-          console.log(error);
+          commit("setErrorMessage", error.code);
         });
     },
+
     async authUser({ dispatch, commit }, { email, password, name }) {
       const auth = getAuth();
-      console.log(email);
-      console.log(password);
-      console.log(name);
-      createUserWithEmailAndPassword(auth, email, password)
+
+      await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          console.log(userCredential.user.uid);
           const db = getDatabase();
-          console.log(db);
+          const dbRef = ref(db);
           set(ref(db, "3/users/" + userCredential.user.uid), {
             username: name,
-            email: email,
             bonus: 100,
+            settings: {
+              phone: "",
+            },
           });
+          get(child(dbRef, `3/users/${userCredential.user.uid}`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                commit("setUserInfo", snapshot.val());
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
 
-          // const user = userCredential.user;
+          commit("setCurrentUser", userCredential.user);
         })
         .catch((error) => {
-          /*           const errorCode = error.code;
-          const errorMessage = error.message; */
-          console.log(error);
+          commit("setErrorMessage", error.code);
         });
     },
 
@@ -71,13 +102,39 @@ export const auth = {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
-          // Sign-out successful.
+          commit("setCurrentUser", null);
+          commit("setUserInfo", null);
+          commit("clearErrorMessage");
         })
         .catch((error) => {
           console.log(error);
-          // An error happened.
         });
     },
+
+    async loggedUser({ dispatch, commit }) {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          get(child(dbRef, `3/users/${user.uid}`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                commit("setUserInfo", snapshot.val());
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {});
+          commit("setCurrentUser", user.uid);
+          commit("setIsAuth", true);
+        }
+      });
+    },
+  },
+  getters: {
+    getError: (state) => state.errorMessage,
   },
   namespaced: true,
 };

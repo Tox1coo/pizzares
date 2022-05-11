@@ -32,6 +32,8 @@
       {{ v$.userName.$errors[0].$message }}
     </span>
 
+    <div v-if="visibleError">{{ messageError }}</div>
+
     <MyButton class="auth__btn auth__btn--autn">Зарегестрироваться</MyButton>
 
     <div class="user">
@@ -53,9 +55,9 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { email, required, minLength } from "@vuelidate/validators";
-
-import { mapMutations, mapActions } from "vuex";
+import { email, required, minLength, maxLength } from "@vuelidate/validators";
+import messages from "@/utils/messages";
+import { mapMutations, mapActions, mapState } from "vuex";
 
 export default {
   data() {
@@ -66,6 +68,8 @@ export default {
       userName: "",
       errorPassword: "",
       errorPasswordLang: false,
+      visibleError: false,
+      messageError: "",
     };
   },
 
@@ -73,32 +77,46 @@ export default {
     return {
       email: { email, required },
       password: { required, minLength: minLength(8) },
-      userName: { required, minLength: minLength(3) },
+      userName: { required, minLength: minLength(3), maxLength: maxLength(15) },
     };
   },
 
   props: { show: Boolean, visibleModalLogin: Boolean },
   methods: {
-    ...mapMutations({ setIsAuth: "auth/setIsAuth" }),
+    ...mapMutations({
+      setIsAuth: "auth/setIsAuth",
+      clearErrorMessage: "auth/clearErrorMessage",
+    }),
     ...mapActions({ authUser: "auth/authUser" }),
 
-    submitAuth() {
+    async submitAuth() {
       this.v$.$validate();
       if (!this.v$.$error) {
         if (
           this.password.search(/[a-zA-Z]/g) != -1 &&
           this.password.search(/[а-яА-Я]/g) != 0
         ) {
-          this.$emit("update:show", false);
-          this.$emit("update:visibleModalLogin", true);
-          this.setIsAuth(true);
           const userAuth = {
             email: this.email,
             password: this.password,
             name: this.userName,
           };
-          this.authUser(userAuth);
-          console.log(userAuth);
+
+          await this.authUser(userAuth);
+
+          if (this.errorMessage === null) {
+            this.$emit("update:show", false);
+            this.$emit("update:visibleModalLogin", true);
+            this.setIsAuth(true);
+          } else {
+            for (const key in messages) {
+              if (key === this.errorMessage) {
+                this.messageError = messages[key];
+              }
+            }
+            this.visibleError = true;
+            this.clearErrorMessage();
+          }
         } else {
           this.errorPassword = "Пароль не должен содержать русских символов";
           this.errorPasswordLang = true;
@@ -108,6 +126,9 @@ export default {
         this.errorPasswordLang = false;
       }
     },
+  },
+  computed: {
+    ...mapState({ errorMessage: (state) => state.auth.errorMessage }),
   },
 };
 </script>

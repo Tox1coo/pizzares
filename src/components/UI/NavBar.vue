@@ -34,7 +34,7 @@
               <ButtonRegister
                 @click="visibleUserParams = !visibleUserParams"
                 v-else
-                >UserName</ButtonRegister
+                >{{ userInfo?.username }}</ButtonRegister
               >
               <div
                 ref="userName"
@@ -42,7 +42,7 @@
                 class="panel__right-user user"
               >
                 <div class="user__bonus">
-                  <p>100 бонусов</p>
+                  <p>{{ userInfo.bonus }} бонусов</p>
                   <hr />
                 </div>
                 <div class="user__params">
@@ -118,7 +118,7 @@ export default {
   data() {
     return {
       currentCity: "Москва",
-      sum: 10,
+      sum: 0,
       visibleModalIsAuth: false,
       visibleUserParams: false,
     };
@@ -143,6 +143,7 @@ export default {
   computed: {
     ...mapState({
       isAuth: (state) => state.auth.isAuth,
+      userInfo: (state) => state.auth.userInfo,
     }),
   },
 };
@@ -252,6 +253,7 @@ hr {
   }
 
   &__bonus {
+    cursor: default;
     display: flex;
     flex-direction: column;
     justify-content: center;
