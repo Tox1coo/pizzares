@@ -69,7 +69,7 @@
             <h2>Куда Пицца</h2>
           </div>
           <div class="panel__btns">
-            <MyButton>
+            <MyButton @click="updateVisibleSideBar(true)">
               <svg
                 style="margin-right: 5px"
                 width="24"
@@ -98,7 +98,7 @@
                   </clipPath>
                 </defs>
               </svg>
-              {{ sum }} ₽
+              {{ sumOrder }} ₽
             </MyButton>
           </div>
         </div>
@@ -118,7 +118,6 @@ export default {
   data() {
     return {
       currentCity: "Москва",
-      sum: 0,
       visibleModalIsAuth: false,
       visibleUserParams: false,
     };
@@ -129,7 +128,9 @@ export default {
     ...mapMutations({
       setVisibleModal: "auth/setVisibleModal",
       setIsAuth: "auth/setIsAuth",
+      updateVisibleSideBar: "orders/updateVisibleSideBar",
     }),
+
     ...mapActions({ logoutUser: "auth/logoutUser" }),
 
     rotateCityName(cityItem) {
@@ -142,6 +143,7 @@ export default {
 
   computed: {
     ...mapState({
+      sumOrder: (state) => state.orders.sumOrder,
       isAuth: (state) => state.auth.isAuth,
       userInfo: (state) => state.auth.userInfo,
     }),

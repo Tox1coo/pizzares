@@ -21,6 +21,7 @@
         v-else
       ></AuthUser>
     </ModalAuth>
+    <OrderSideBar> <OrderList /></OrderSideBar>
   </div>
 </template>
 
@@ -31,10 +32,20 @@ import StocksList from "@/components/stocks/StocksList";
 import ListProducts from "@/components/products/ListProducts";
 import LoginUser from "@/components/user/LoginUser";
 import AuthUser from "@/components/user/AuthUser";
+import OrderSideBar from "@/components/orders/OrderSideBar";
+import OrderList from "@/components/orders/OrderList";
 
 export default {
   name: "Home",
-  components: { CategoryList, StocksList, ListProducts, LoginUser, AuthUser },
+  components: {
+    CategoryList,
+    StocksList,
+    ListProducts,
+    LoginUser,
+    AuthUser,
+    OrderSideBar,
+    OrderList,
+  },
   data() {
     return {
       show: false,
@@ -79,6 +90,7 @@ export default {
       filterProduct: (state) => state.product.filterProduct,
 
       visibleModal: (state) => state.auth.visibleModal,
+      visibleSideBarOrder: (state) => state.orders.visibleSideBarOrder,
     }),
     ...mapGetters({
       getProductListinCategory: "product/getProductListinCategory",

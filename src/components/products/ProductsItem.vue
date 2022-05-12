@@ -10,7 +10,10 @@
       <h3 class="title">{{ productItem.title }}</h3>
       <p class="text">{{ productItem.description }}</p>
       <div class="price__product">
-        <MyButton v-if="productItem.category != 'Пицца'" class="price__btn"
+        <MyButton
+          v-if="productItem.category != 'Пицца'"
+          class="price__btn"
+          @click="setSumOrder"
           >Выбрать</MyButton
         >
         <MyButton
@@ -30,12 +33,32 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from "vuex";
 export default {
   props: {
     productItem: {
       type: Object,
       required: true,
     },
+  },
+  methods: {
+    ...mapMutations({
+      plusSumOrder: "orders/plusSumOrder",
+      setListOrders: "orders/setListOrders",
+    }),
+    setSumOrder() {
+      if (this.isAuth) {
+        this.plusSumOrder(this.productItem.price);
+        this.setListOrders(this.productItem);
+      } else {
+        alert("Зайдите в аккаунт");
+      }
+    },
+  },
+  computed: {
+    ...mapState({
+      isAuth: (state) => state.auth.isAuth,
+    }),
   },
 };
 </script>
