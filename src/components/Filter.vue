@@ -149,12 +149,15 @@ export default {
   top: 0;
   right: 0;
   cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
 }
 .close {
   cursor: pointer;
   width: 24px;
   height: 24px;
   position: relative;
+  transition: transform 0.4s ease;
+
   span {
     display: block;
     position: absolute;
@@ -170,6 +173,9 @@ export default {
     &:last-child {
       transform: rotate(-45deg);
     }
+  }
+  &:hover {
+    transform: rotate(270deg);
   }
 }
 

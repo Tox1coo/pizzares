@@ -56,7 +56,7 @@
             <p>Итого: {{ productItem.price }} ₽</p>
             <span>{{ weight }} г</span>
           </div>
-          <MyButton @click="hideDialog" class="btn">Добавить</MyButton>
+          <MyButton @click="addToOrders()" class="btn">Добавить</MyButton>
         </div>
       </div>
     </div>
@@ -66,6 +66,7 @@
 <script>
 import toggleMixin from "@/mixins/toggleMixins";
 import AddList from "@/components/AddList";
+import { mapMutations } from "vuex";
 export default {
   name: "ModalProduct",
   components: { AddList },
@@ -94,8 +95,20 @@ export default {
   },
   mounted() {
     this.productItem = JSON.parse(JSON.stringify(this.product));
+    this.productItem.type = "Традиционное";
+    this.productItem.size = "20 см";
   },
   methods: {
+    ...mapMutations({
+      setListOrders: "orders/setListOrders",
+      plusSumOrder: "orders/plusSumOrder",
+    }),
+    addToOrders() {
+      console.log(2);
+      this.setListOrders(this.productItem);
+      this.plusSumOrder(this.productItem.price);
+      this.hideDialog();
+    },
     addToPizza(addItem, active) {
       this.productItem.price =
         active == true
@@ -209,6 +222,7 @@ export default {
   z-index: 1001;
   width: 32px;
   height: 32px;
+  transition: transform 0.4s ease 0s;
   cursor: pointer;
   span {
     right: 15px;
@@ -224,6 +238,9 @@ export default {
     &:last-child {
       transform: rotate(44deg);
     }
+  }
+  &:hover {
+    transform: rotate(270deg);
   }
 }
 </style>

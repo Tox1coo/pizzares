@@ -4,14 +4,14 @@
   <div class="container">
     <router-view />
   </div>
+
+  <FooterPage></FooterPage>
 </template>
 
 <script>
-import NavBar from "@/components/UI/NavBar";
 import { mapActions } from "vuex";
 
 export default {
-  components: { NavBar },
   data() {
     return {
       currentCity: "",
@@ -33,6 +33,7 @@ export default {
   width: 1320px;
   padding: 0px 15px;
   margin: 0 auto;
+  flex: 1 1 100%;
 }
 
 *,

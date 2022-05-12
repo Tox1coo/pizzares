@@ -53,6 +53,8 @@ export default {
   z-index: 1001;
   width: 32px;
   height: 32px;
+  transition: transform 0.4s ease;
+
   cursor: pointer;
   span {
     right: 15px;
@@ -67,6 +69,9 @@ export default {
     &:last-child {
       transform: rotate(44deg);
     }
+  }
+  &:hover {
+    transform: rotate(270deg);
   }
 }
 </style>

@@ -11,6 +11,8 @@ import TabsList from "@/components/UI/TabsList";
 import TabsItem from "@/components/UI/TabsItem";
 import ModalAuth from "@/components/UI/ModalAuth";
 import MyInput from "@/components/UI/MyInput";
+import CounterProduct from "@/components/UI/CounterProduct";
+import FooterPage from "@/components/UI/FooterPage";
 export default [
   NavBar,
   CityList,
@@ -25,4 +27,6 @@ export default [
   TabsItem,
   MyInput,
   ModalAuth,
+  CounterProduct,
+  FooterPage,
 ];

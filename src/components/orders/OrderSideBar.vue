@@ -1,6 +1,12 @@
 <template>
   <div class="out" @click.stop="hideSideBar">
-    <div class="filter" @click.stop v-show="visibleSideBarOrder">
+    <div class="order" @click.stop v-show="visibleSideBarOrder">
+      <div class="head__item">
+        <div @click="hideSideBar" class="close">
+          <span></span>
+          <span></span>
+        </div>
+      </div>
       <slot></slot>
     </div>
   </div>
@@ -8,9 +14,7 @@
 
 <script>
 import { mapMutations, mapState } from "vuex";
-// import toggleMixin from "@/mixins/toggleMixins";
 export default {
-  //   mixins: [toggleMixin],
   methods: {
     ...mapMutations({
       updateVisibleSideBar: "orders/updateVisibleSideBar",
@@ -18,7 +22,6 @@ export default {
 
     hideSideBar() {
       this.updateVisibleSideBar(false);
-      // this.$emit("update:show", false);
     },
   },
 
@@ -40,31 +43,51 @@ export default {
   top: 0;
   right: 0;
   cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
 }
-.filter {
+.order {
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: 420px;
+  padding: 32px 20px 0px 20px;
   position: relative;
   height: 100vh;
   background-color: #fff;
-  &__item {
-    padding: 32px 20px 0px;
-    &-desc {
-      flex: 1 1;
-      padding: 0 0px 28px 20px;
-    }
-    &-btns {
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      border-top: 2px solid #f0f0f0;
-    }
-  }
+
   cursor: default;
-  &-btn {
-    padding: 13px 70.5px;
+}
+.close {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  transition: transform 0.4s ease;
+  span {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: -4px;
+    width: 32px;
+    height: 3px;
+    background-color: #a5a5a5;
+    &:first-child {
+      transform: rotate(45deg);
+    }
+    &:last-child {
+      transform: rotate(-45deg);
+    }
   }
+  &:hover {
+    transform: rotate(270deg);
+  }
+}
+.head__item {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

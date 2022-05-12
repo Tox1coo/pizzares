@@ -22,6 +22,25 @@
           class="price__btn"
           >Выбрать</MyButton
         >
+        <!--         <MyButton
+          v-if="productItem.category != 'Пицца' && !isInOrder"
+          class="price__btn"
+          @click="setSumOrder"
+          >Выбрать</MyButton
+        >
+        <MyButton
+          v-else-if="!isInOrder"
+          @click="$emit('visibleDialog', productItem, true), (isInOrder = true)"
+          class="price__btn"
+          >Выбрать</MyButton
+        > -->
+
+        <!--         <MyButton
+          v-else
+          class="price__btn price__btn--background"
+          @click="setSumOrder, updateVisibleSideBar(true)"
+          >В корзине</MyButton
+        > -->
 
         <span v-if="productItem.category === 'Пицца'"
           >от {{ productItem.price }} ₽
@@ -34,6 +53,7 @@
 
 <script>
 import { mapMutations, mapState } from "vuex";
+import MyButton from "../UI/MyButton.vue";
 export default {
   props: {
     productItem: {
@@ -41,15 +61,22 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      isInOrder: false,
+    };
+  },
   methods: {
     ...mapMutations({
       plusSumOrder: "orders/plusSumOrder",
       setListOrders: "orders/setListOrders",
+      updateVisibleSideBar: "orders/updateVisibleSideBar",
     }),
     setSumOrder() {
       if (this.isAuth) {
         this.plusSumOrder(this.productItem.price);
         this.setListOrders(this.productItem);
+        this.isInOrder = true;
       } else {
         alert("Зайдите в аккаунт");
       }
@@ -60,6 +87,7 @@ export default {
       isAuth: (state) => state.auth.isAuth,
     }),
   },
+  components: { MyButton },
 };
 </script>
 
@@ -100,6 +128,12 @@ export default {
   }
   &__btn {
     padding: 13px 32px;
+    &--background {
+      background-color: #fff;
+      color: #ff7010;
+
+      border: 1px solid #ff7010;
+    }
   }
 }
 .focus {

@@ -20,6 +20,9 @@ export const orders = {
     updateVisibleSideBar(state, visibleSideBarOrder) {
       state.visibleSideBarOrder = visibleSideBarOrder;
     },
+    deleteOrderItem(state, idOrderItem) {
+      state.orderList.splice(idOrderItem, 1);
+    },
   },
   actions: {},
   namespaced: true,
