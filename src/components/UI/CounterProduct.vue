@@ -7,13 +7,13 @@
     >
       -
     </button>
-    <span>{{ counter }}</span>
+    <span>{{ orderItem.countInOrder }}</span>
     <button @click="increment" class="counter__increment">+</button>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "CounterProduct",
   data() {
@@ -33,20 +33,31 @@ export default {
       minusSumOrder: "orders/minusSumOrder",
       deleteOrderItem: "orders/deleteOrderItem",
     }),
+    ...mapActions({
+      incrementProductCount: "orders/incrementProductCount",
+      decrementProductCount: "orders/decrementProductCount",
+    }),
     increment() {
-      this.counter++;
       this.plusSumOrder(this.orderItem.price);
-      this.$emit("incrementPrice", this.orderItem.price);
+      this.incrementProductCount(this.orderItem);
     },
-    decrement() {
-      this.counter--;
+    async decrement() {
       this.minusSumOrder(this.orderItem.price);
-      this.$emit("decrementPrice", this.orderItem.price);
+      await this.decrementProductCount(this.orderItem);
 
-      if (this.counter == 0) {
-        const deleteOrderItem = this.orderList.findIndex(
-          (item) => item.id === this.orderItem.id
-        );
+      if (this.orderItem.countInOrder == 0) {
+        const deleteOrderItem =
+          this.orderItem?.type === undefined
+            ? this.orderList.findIndex(
+                (productItemInOrder) =>
+                  productItemInOrder.allPrice === this.orderItem.allPrice &&
+                  productItemInOrder.title === this.orderItem.title
+              )
+            : this.orderList.findIndex(
+                (productItemInOrder) =>
+                  productItemInOrder.allPrice === this.orderItem.allPrice &&
+                  productItemInOrder.type === this.orderItem.type
+              );
 
         this.deleteOrderItem(deleteOrderItem);
       }
@@ -77,6 +88,10 @@ export default {
     color: #ff7010;
     cursor: pointer;
     font-size: 18px;
+    &:hover {
+      border: 1px;
+      border-color: #ff7010;
+    }
   }
   font-size: 16px;
   color: #ff7010;

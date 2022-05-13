@@ -66,7 +66,7 @@
 <script>
 import toggleMixin from "@/mixins/toggleMixins";
 import AddList from "@/components/AddList";
-import { mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 export default {
   name: "ModalProduct",
   components: { AddList },
@@ -97,19 +97,30 @@ export default {
     this.productItem = JSON.parse(JSON.stringify(this.product));
     this.productItem.type = "Традиционное";
     this.productItem.size = "20 см";
+    this.productItem.allIngredients = [];
   },
   methods: {
     ...mapMutations({
       setListOrders: "orders/setListOrders",
       plusSumOrder: "orders/plusSumOrder",
     }),
+    ...mapActions({
+      checkIsIsOrderPizza: "orders/checkIsIsOrderPizza",
+    }),
     addToOrders() {
-      console.log(2);
-      this.setListOrders(this.productItem);
+      this.checkIsIsOrderPizza(this.productItem);
       this.plusSumOrder(this.productItem.price);
       this.hideDialog();
     },
     addToPizza(addItem, active) {
+      if (active) {
+        this.productItem.allIngredients.push(addItem.name);
+      } else {
+        const indexItem = this.productItem.allIngredients.findIndex(
+          (item) => item === addItem.name
+        );
+        this.productItem.allIngredients.splice(indexItem, 1);
+      }
       this.productItem.price =
         active == true
           ? addItem.price + this.productItem.price

@@ -8,13 +8,12 @@
       <p v-if="orderItem?.type" class="order__item-info-type">
         {{ orderItem.type }}, {{ orderItem.size }}
       </p>
+      <p v-for="ingredents in orderItem.allIngredients" :key="ingredents">
+        + {{ ingredents }}
+      </p>
       <div class="order__item-info-bottom">
-        <CounterProduct
-          @incrementPrice="incrementPrice"
-          @decrementPrice="decrementPrice"
-          :orderItem="orderItem"
-        ></CounterProduct>
-        <span>{{ priceItem }} ₽</span>
+        <CounterProduct :orderItem="orderItem"></CounterProduct>
+        <span>{{ orderItem.allPrice || orderItem.price }} ₽</span>
       </div>
     </div>
   </div>
@@ -23,27 +22,12 @@
 <script>
 import CounterProduct from "../UI/CounterProduct.vue";
 export default {
-  data() {
-    return {
-      priceItem: 0,
-    };
-  },
-  mounted() {
-    this.priceItem = this.orderItem.price;
-  },
   props: {
     orderItem: {
       type: Object,
     },
   },
-  methods: {
-    incrementPrice(newPrice) {
-      this.priceItem += newPrice;
-    },
-    decrementPrice(newPrice) {
-      this.priceItem -= newPrice;
-    },
-  },
+  methods: {},
   components: { CounterProduct },
 };
 </script>
@@ -51,7 +35,7 @@ export default {
 <style lang="scss" scoped>
 .order__item {
   width: 380px;
-  height: 126px;
+  height: fit-content;
   border: 1px solid #f0f0f0;
   border-radius: 12px;
   display: flex;
@@ -66,6 +50,9 @@ export default {
   &-info {
     width: 100%;
     display: flex;
+    h3 {
+      font-size: 16px;
+    }
     flex-direction: column;
     &-title {
       flex: 1 1;
@@ -78,6 +65,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       flex: 1 1;
+      margin-top: 5px;
       span {
         color: #ff7010;
         font-weight: 600;

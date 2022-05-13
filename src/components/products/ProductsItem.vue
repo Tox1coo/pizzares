@@ -22,25 +22,6 @@
           class="price__btn"
           >Выбрать</MyButton
         >
-        <!--         <MyButton
-          v-if="productItem.category != 'Пицца' && !isInOrder"
-          class="price__btn"
-          @click="setSumOrder"
-          >Выбрать</MyButton
-        >
-        <MyButton
-          v-else-if="!isInOrder"
-          @click="$emit('visibleDialog', productItem, true), (isInOrder = true)"
-          class="price__btn"
-          >Выбрать</MyButton
-        > -->
-
-        <!--         <MyButton
-          v-else
-          class="price__btn price__btn--background"
-          @click="setSumOrder, updateVisibleSideBar(true)"
-          >В корзине</MyButton
-        > -->
 
         <span v-if="productItem.category === 'Пицца'"
           >от {{ productItem.price }} ₽
@@ -52,7 +33,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import MyButton from "../UI/MyButton.vue";
 export default {
   props: {
@@ -61,22 +42,19 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      isInOrder: false,
-    };
-  },
+
   methods: {
     ...mapMutations({
       plusSumOrder: "orders/plusSumOrder",
-      setListOrders: "orders/setListOrders",
       updateVisibleSideBar: "orders/updateVisibleSideBar",
+    }),
+    ...mapActions({
+      checkIsIsOrder: "orders/checkIsIsOrder",
     }),
     setSumOrder() {
       if (this.isAuth) {
         this.plusSumOrder(this.productItem.price);
-        this.setListOrders(this.productItem);
-        this.isInOrder = true;
+        this.checkIsIsOrder(this.productItem);
       } else {
         alert("Зайдите в аккаунт");
       }

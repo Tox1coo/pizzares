@@ -18,7 +18,7 @@
       <span> Итого: {{ sumOrder }} ₽ </span>
       <MyButton
         v-if="getListOrders.length != 0"
-        @click="$router.push('/order')"
+        @click="transitionOnPageOrder()"
         class="order__list-btn"
         >Оформить заказ</MyButton
       >
@@ -43,6 +43,10 @@ export default {
   components: { OrderItem, MyButton },
   methods: {
     ...mapMutations({ updateVisibleSideBar: "orders/updateVisibleSideBar" }),
+    transitionOnPageOrder() {
+      this.updateVisibleSideBar(false);
+      this.$router.push("/order");
+    },
   },
   computed: {
     ...mapGetters({

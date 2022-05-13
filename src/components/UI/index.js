@@ -13,6 +13,8 @@ import ModalAuth from "@/components/UI/ModalAuth";
 import MyInput from "@/components/UI/MyInput";
 import CounterProduct from "@/components/UI/CounterProduct";
 import FooterPage from "@/components/UI/FooterPage";
+import Carousel from "@/components/UI/Carousel";
+import CarouselItem from "@/components/UI/CarouselItem";
 export default [
   NavBar,
   CityList,
@@ -29,4 +31,6 @@ export default [
   ModalAuth,
   CounterProduct,
   FooterPage,
+  Carousel,
+  CarouselItem,
 ];
