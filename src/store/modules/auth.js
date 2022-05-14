@@ -17,6 +17,7 @@ export const auth = {
     currentUser: null,
     userInfo: null,
     errorMessage: null,
+    orderNumber: 0,
   }),
   mutations: {
     setVisibleModal(state, visibleModal) {
@@ -36,6 +37,9 @@ export const auth = {
     },
     clearErrorMessage(state) {
       state.errorMessage = null;
+    },
+    setOrderNumber(state, orderNumber) {
+      state.orderNumber = orderNumber;
     },
   },
   actions: {
@@ -58,6 +62,7 @@ export const auth = {
               }
             })
             .catch((error) => {});
+          console.log(userCredential);
           commit("setCurrentUser", userCredential.user);
         })
         .catch((error) => {
@@ -83,6 +88,17 @@ export const auth = {
             .then((snapshot) => {
               if (snapshot.exists()) {
                 commit("setUserInfo", snapshot.val());
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          get(child(dbRef, `3/orderNumber`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                commit("setOrderNumber", snapshot.val());
               } else {
                 console.log("No data available");
               }
@@ -127,7 +143,8 @@ export const auth = {
               }
             })
             .catch((error) => {});
-          commit("setCurrentUser", user.uid);
+          console.log(user);
+          commit("setCurrentUser", user);
           commit("setIsAuth", true);
         }
       });

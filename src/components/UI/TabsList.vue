@@ -17,7 +17,7 @@ export default {
   props: {
     tabsList: { type: Array, required: true },
   },
-  emits: ["addSizeToPizza", "addTypeToPizza"],
+  emits: ["addInfoTab"],
   data() {
     return { indexTab: 0 };
   },
@@ -25,11 +25,10 @@ export default {
     addActive(indexTab, tab) {
       this.indexTab = indexTab;
       if (tab?.price != undefined) {
-        this.$emit("addSizeToPizza", tab.price, tab.size);
+        this.$emit("addInfoTab", tab.price, tab.size);
       } else {
-        this.$emit("addTypeToPizza", tab);
+        this.$emit("addInfoTab", tab);
       }
-      console.log();
     },
   },
 };

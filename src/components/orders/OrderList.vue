@@ -10,10 +10,12 @@
         :orderItem="orderItem"
       ></OrderItem>
     </div>
+
     <div v-else class="order__list-item order__list-empty">
       <img :src="require('@/assets/order.svg')" alt="" />
       <h2>Ой, ваша корзина пуста! :(</h2>
     </div>
+
     <div class="order__list-bottom">
       <span> Итого: {{ sumOrder }} ₽ </span>
       <MyButton

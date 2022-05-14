@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import CategoryList from "@/components/category/CategoryList";
 import StocksList from "@/components/stocks/StocksList";
 import ListProducts from "@/components/products/ListProducts";
@@ -52,24 +52,10 @@ export default {
       visibleModalLogin: true,
     };
   },
-  created() {
-    this.fetchCategory();
-    this.fetchCity();
-    this.fetchProducts();
-  },
+
   methods: {
     ...mapMutations({
       setVisibleModal: "auth/setVisibleModal",
-    }),
-
-    ...mapActions({
-      fetchCity: "city/fetchCity",
-
-      fetchCategory: "category/fetchCategory",
-      fetchCategoryImage: "category/fetchCategoryImage",
-
-      fetchProductImage: "product/fetchProductImage",
-      fetchProducts: "product/fetchProducts",
     }),
 
     getProductList(category) {

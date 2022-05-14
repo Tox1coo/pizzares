@@ -17,13 +17,22 @@ export default {
       currentCity: "",
     };
   },
-
-  mounted() {
+  created() {
     this.loggedUser();
+
+    this.fetchCategory();
+    this.fetchCity();
+    this.fetchProducts();
+    this.restaurantListAppend();
   },
+
   methods: {
     ...mapActions({
       loggedUser: "auth/loggedUser",
+      fetchCity: "city/fetchCity",
+      fetchCategory: "category/fetchCategory",
+      fetchProducts: "product/fetchProducts",
+      restaurantListAppend: "orders/restaurantListAppend",
     }),
   },
 };

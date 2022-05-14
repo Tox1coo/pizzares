@@ -36,12 +36,12 @@
         </h3>
         <div class="modal__content-tabs tabs">
           <TabsList
-            @addTypeToPizza="addTypeToPizza"
+            @addInfoTab="addTypeToPizza"
             class="tabs__list"
             :tabsList="type"
           ></TabsList>
           <TabsList
-            @addSizeToPizza="addSizeToPizza"
+            @addInfoTab="addSizeToPizza"
             class="tabs__list"
             :tabsList="size"
           ></TabsList>

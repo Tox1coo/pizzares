@@ -1,8 +1,14 @@
+/* eslint-disable no-unused-vars */
+
+import { getDatabase, ref, get, child } from "firebase/database";
+import { firebaseConfig } from "@/store/config";
+
 export const orders = {
   state: () => ({
     orderList: [],
     sumOrder: 0,
     visibleSideBarOrder: false,
+    restaurantList: [],
   }),
   getters: {
     getListOrders: (state) => state.orderList,
@@ -26,6 +32,9 @@ export const orders = {
     updateOrderList(state, orderList) {
       state.orderList = orderList;
     },
+    setrestaurantList(state, restaurantList) {
+      state.restaurantList = restaurantList;
+    },
   },
   actions: {
     checkIsIsOrder({ state, commit }, productItem) {
@@ -42,7 +51,6 @@ export const orders = {
       } else {
         stateOrderListItem[checkIsInOrder].countInOrder++;
         stateOrderListItem[checkIsInOrder].allPrice += productItem.price;
-        console.log(stateOrderListItem[checkIsInOrder].allPrice);
 
         commit("updateOrderList", stateOrderListItem);
       }
@@ -121,13 +129,30 @@ export const orders = {
           commit("updateOrderList", stateOrderListItem);
         } else {
           productItem.countInOrder = 1;
-          console.log(2);
           commit("setListOrders", productItem);
         }
       } else {
         productItem.countInOrder = 1;
         commit("setListOrders", productItem);
       }
+    },
+    async restaurantListAppend({ commit }) {
+      const storageData = ref(getDatabase());
+
+      await get(child(storageData, `4/restaurantList`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            commit("setrestaurantList", snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    async updateOrderListUser({ commit }, { newOrder }) {
+      console.log(newOrder);
     },
   },
   namespaced: true,

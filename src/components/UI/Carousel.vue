@@ -7,7 +7,6 @@
         :carouselItem="carouselItem"
         :style="{
           left: `${-215 * currentSlide}px`,
-          transition: 'left 0.5s easy',
         }"
       ></CarouselItem>
     </div>
@@ -46,7 +45,7 @@ export default {
       }
     },
     nextSlide() {
-      const maxSlides = this.carouselList.length / 2;
+      const maxSlides = Math.ceil(this.carouselList.length / 2);
 
       if (this.currentSlide < maxSlides) {
         this.currentSlide++;

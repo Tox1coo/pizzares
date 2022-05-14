@@ -4,10 +4,13 @@
     <input
       :value="modelValue"
       @input="updateInput($event)"
-      :name="typeInput"
+      :class="{ dropList: typeInput === '' }"
+      :name="nameInput"
       :type="typeInput"
       :placeholder="placeholderInput"
     />
+    <span class="error" v-if="error">{{ errorMessage }}</span>
+    <slot></slot>
   </div>
 </template>
 
@@ -21,7 +24,6 @@ export default {
     },
     typeInput: {
       type: String,
-      default: "text",
     },
     placeholderInput: {
       type: String,
@@ -29,12 +31,42 @@ export default {
     },
     labelInput: {
       type: String,
-      required: true,
+      required: false,
     },
+    nameInput: {
+      type: String,
+      default: "",
+    },
+    error: {
+      type: Boolean,
+      default: false,
+    },
+    errorMessage: { type: String, default: "" },
   },
   methods: {
     updateInput(e) {
-      this.$emit("update:modelValue", e.target.value);
+      if (this.typeInput === "") {
+        const lengthValue = e.target.value.length;
+        e.target.value = e.target.value.substr(0, lengthValue - 1);
+      }
+      if (this.nameInput === "Имя") {
+        if (Number.isInteger(+e.target.value)) {
+          const lengthValue = e.target.value.length;
+          e.target.value = e.target.value.substr(0, lengthValue - 1);
+        } else {
+          this.$emit("update:modelValue", e.target.value);
+        }
+      }
+      if (this.typeInput === "tel" || this.nameInput != "") {
+        if (Number.isInteger(+e.target.value)) {
+          this.$emit("update:modelValue", e.target.value);
+        } else {
+          const lengthValue = e.target.value.length;
+          e.target.value = e.target.value.substr(0, lengthValue - 1);
+        }
+      } else {
+        this.$emit("update:modelValue", e.target.value);
+      }
     },
   },
 };
@@ -44,20 +76,25 @@ export default {
 .form {
   margin-top: 15px;
 }
+.dropList {
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+}
 input {
-  width: 320px;
+  width: 100%;
   height: 48px;
   border: 1px solid #f0f0f0;
   border-radius: 6px;
   outline: 1px solid #ccc;
   padding-left: 10px;
   &:focus {
-    border: 1px solid #000;
+    border: 1px solid #ff7010;
   }
 
   &:hover {
     transition: all 0.2s linear;
-    border: 1px solid #000;
+    border: 1px solid #ff7010;
   }
 }
 label {
@@ -66,5 +103,10 @@ label {
   color: #a5a5a5;
   font-size: 15px;
   margin-bottom: 3px;
+}
+.error {
+  display: inline-block;
+  color: red;
+  margin-top: 5px;
 }
 </style>

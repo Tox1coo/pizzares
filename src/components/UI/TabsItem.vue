@@ -34,6 +34,7 @@ export default {
   text-align: center;
   height: 100%;
   border-radius: 6px;
+  background-color: #fff;
 }
 .active {
   transition: all 0.2s ease;

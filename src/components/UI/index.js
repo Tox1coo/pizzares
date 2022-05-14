@@ -15,6 +15,9 @@ import CounterProduct from "@/components/UI/CounterProduct";
 import FooterPage from "@/components/UI/FooterPage";
 import Carousel from "@/components/UI/Carousel";
 import CarouselItem from "@/components/UI/CarouselItem";
+import RadioList from "@/components/UI/RadioList";
+import RadioListItem from "@/components/UI/RadioListItem";
+import DropList from "@/components/UI/DropList";
 export default [
   NavBar,
   CityList,
@@ -32,5 +35,8 @@ export default [
   CounterProduct,
   FooterPage,
   Carousel,
+  RadioList,
+  RadioListItem,
   CarouselItem,
+  DropList,
 ];

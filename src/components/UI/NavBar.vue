@@ -277,7 +277,9 @@ hr {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-top: 8px;
     flex: 1 1 auto;
+    color: #a5a6a5;
   }
 }
 </style>
