@@ -26,7 +26,7 @@
       >
       <MyButton
         v-else
-        @click="updateVisibleSideBar(false)"
+        @click="$router.push('/'), updateVisibleSideBar(false)"
         class="order__list-btn"
         >Вернуться в меню</MyButton
       >

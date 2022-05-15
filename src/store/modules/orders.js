@@ -1,6 +1,14 @@
 /* eslint-disable no-unused-vars */
 
-import { getDatabase, ref, get, child, onValue } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  get,
+  child,
+  update,
+  set,
+  push,
+} from "firebase/database";
 import { firebaseConfig } from "@/store/config";
 
 export const orders = {
@@ -22,6 +30,9 @@ export const orders = {
     },
     minusSumOrder(state, sumOrder) {
       state.sumOrder -= sumOrder;
+    },
+    clearSumOrder(state) {
+      state.sumOrder = 0;
     },
     updateVisibleSideBar(state, visibleSideBarOrder) {
       state.visibleSideBarOrder = visibleSideBarOrder;
@@ -153,8 +164,11 @@ export const orders = {
     },
     async updateOrderListUser({ state, commit }, newOrder) {
       const random = Math.floor(1 + Math.random() * (4 + 1 - 1));
+
       newOrder.orderList = [];
       newOrder.orderList = state.orderList;
+
+      const db = getDatabase();
 
       switch (random) {
         case 1:
@@ -170,7 +184,15 @@ export const orders = {
           newOrder.status = "Отмена";
           break;
       }
-      console.log(newOrder);
+      const updates = {};
+      const newNumber = ++newOrder.orderNumber;
+      updates["3/orderNumber"] = newNumber;
+      const newPostKey = push(child(ref(db), "3")).key;
+      const UID_USER = newOrder.UID_USER;
+      delete newOrder.UID_USER;
+      set(ref(db, "3/users/" + UID_USER + "/orders/" + newPostKey), newOrder);
+
+      return update(ref(db), updates);
     },
   },
   namespaced: true,

@@ -46,8 +46,7 @@
                   <hr />
                 </div>
                 <div class="user__params">
-                  <a @click="$router.push('/orders')">История заказов</a>
-                  <a @click="$router.push('/setting')">Настройки</a>
+                  <a @click="$router.push('/settingsUser')">Настройки</a>
                   <hr />
                 </div>
                 <div

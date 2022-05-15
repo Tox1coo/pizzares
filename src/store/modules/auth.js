@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { getDatabase, ref, set, child, get } from "firebase/database";
+import { getDatabase, ref, set, child, get, onValue } from "firebase/database";
 import { firebaseConfig } from "@/store/config";
 
 import {
@@ -17,7 +17,7 @@ export const auth = {
     currentUser: null,
     userInfo: null,
     errorMessage: null,
-    orderNumber: 0,
+    orderNumber: 1,
   }),
   mutations: {
     setVisibleModal(state, visibleModal) {
@@ -64,6 +64,7 @@ export const auth = {
             .catch((error) => {});
           console.log(userCredential);
           commit("setCurrentUser", userCredential.user);
+          dispatch("updateOrderNumber");
         })
         .catch((error) => {
           commit("setErrorMessage", error.code);
@@ -84,6 +85,8 @@ export const auth = {
               phone: "",
             },
           });
+          dispatch("updateOrderNumber");
+
           get(child(dbRef, `3/users/${userCredential.user.uid}`))
             .then((snapshot) => {
               if (snapshot.exists()) {
@@ -133,6 +136,7 @@ export const auth = {
         if (user) {
           const db = getDatabase();
           const dbRef = ref(db);
+          dispatch("updateOrderNumber");
 
           get(child(dbRef, `3/users/${user.uid}`))
             .then((snapshot) => {
@@ -149,7 +153,34 @@ export const auth = {
         }
       });
     },
+    async updateOrderNumber({ commit }) {
+      const db = getDatabase();
+      const dbRef = ref(db, "3/orderNumber");
+      onValue(dbRef, (snapshot) => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          commit("setOrderNumber", snapshot.val());
+        }
+      });
+    },
+    /*     async updateOrderNumber({ commit }) {
+      const db = getDatabase();
+      const dbRef = ref(db, "3 / orderNumber");
+      get(child(dbRef, `3/orderNumber`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot.val());
+            // commit("setOrderNumber", snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, */
   },
+
   getters: {
     getError: (state) => state.errorMessage,
   },

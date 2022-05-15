@@ -220,15 +220,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import useVuelidate from "@vuelidate/core";
-import {
-  email,
-  required,
-  maxLength,
-  requiredIf,
-  minValue,
-} from "@vuelidate/validators";
+import { email, required, maxLength, requiredIf } from "@vuelidate/validators";
 
 import RegistrationOrderFormBlock from "@/components/OrderForm/RegistrationOrderFormBlock";
 export default {
@@ -309,7 +303,6 @@ export default {
         },
       },
       deal: {
-        minValue: minValue(this.sumOrder + 200),
         required: requiredIf(this.typeDeal === "Сдача с"),
       },
 
@@ -331,7 +324,8 @@ export default {
     ...mapState({
       userInfo: (state) => state.auth.userInfo,
       currentUser: (state) => state.auth.currentUser,
-
+      orderNumber: (state) => state.auth.orderNumber,
+      orderList: (state) => state.orders.orderList,
       sumOrder: (state) => state.orders.sumOrder,
       restaurantList: (state) => state.orders.restaurantList,
     }),
@@ -339,6 +333,10 @@ export default {
   methods: {
     ...mapActions({
       updateOrderListUser: "orders/updateOrderListUser",
+    }),
+    ...mapMutations({
+      updateOrderList: "orders/updateOrderList",
+      clearSumOrder: "orders/clearSumOrder",
     }),
     addWayOrder(way) {
       this.currentTypeWay = way;
@@ -354,10 +352,10 @@ export default {
         this.visibleDropList = false;
       }
     },
-    submitOrder() {
+    async submitOrder() {
       this.v$.$validate();
       console.log(this.v$);
-      if (!this.v$.$error) {
+      if (!this.v$.$error && this.orderList.length > 0) {
         const newOrder = {
           info: {
             name: "",
@@ -379,6 +377,9 @@ export default {
           comment: "",
           totalSumOrder: 0,
           promo: null,
+          status: null,
+          orderNumber: this.orderNumber,
+          UID_USER: this.currentUser.uid,
         };
         newOrder.info.name = this.username;
         newOrder.info.phone = this.phone;
@@ -404,8 +405,17 @@ export default {
         } else {
           newOrder.typeDeal.deal = `Сдача с ${this.deal}`;
         }
-
-        this.updateOrderListUser(newOrder);
+        console.log();
+        await this.updateOrderListUser(
+          newOrder,
+          this.orderNumber,
+          this.currentUser.uid
+        );
+        this.updateOrderList([]);
+        this.clearSumOrder();
+        this.$router.push("/successOrder");
+      } else if (this.orderList.length === 0) {
+        alert("Корзина пуста");
       }
     },
   },
