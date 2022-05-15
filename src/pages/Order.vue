@@ -25,7 +25,7 @@
 
     <h2 class="registration__subtitle">Соусы</h2>
     <Carousel :carouselList="getProducts('Соусы')"></Carousel>
-    <RegistrationOrderForm></RegistrationOrderForm>
+    <RegistrationOrderForm :promo="promo"></RegistrationOrderForm>
   </div>
   <OrderSideBar> <OrderList /></OrderSideBar>
 </template>

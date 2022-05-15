@@ -144,6 +144,8 @@
             :style="{ width: `${160}px` }"
             :placeholderInput="'Дата'"
             :typeInput="'date'"
+            :errorMessage="v$.wayTime.currentDate.$errors[0]?.$message"
+            :error="v$.wayTime.currentDate.$error"
             v-model="wayTime.currentDate"
           >
           </MyInput>
@@ -152,6 +154,8 @@
             :style="{ width: `${160}px` }"
             :placeholderInput="'Время'"
             :typeInput="'time'"
+            :errorMessage="v$.wayTime.currentTime.$errors[0]?.$message"
+            :error="v$.wayTime.currentTime.$error"
             v-model="wayTime.currentTime"
           >
           </MyInput>
@@ -185,6 +189,8 @@
           :placeholderInput="'0'"
           :typeInput="'text'"
           v-model="deal"
+          :errorMessage="v$.deal.$errors[0]?.$message"
+          :error="v$.deal.$error"
         >
           <span>₽ </span></MyInput
         >
@@ -214,9 +220,15 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import useVuelidate from "@vuelidate/core";
-import { email, required, maxLength, requiredIf } from "@vuelidate/validators";
+import {
+  email,
+  required,
+  maxLength,
+  requiredIf,
+  minValue,
+} from "@vuelidate/validators";
 
 import RegistrationOrderFormBlock from "@/components/OrderForm/RegistrationOrderFormBlock";
 export default {
@@ -266,6 +278,12 @@ export default {
       },
     };
   },
+  props: {
+    promo: {
+      type: String,
+      default: "",
+    },
+  },
   validations() {
     return {
       email: { email },
@@ -282,6 +300,19 @@ export default {
         flat: { maxLength: maxLength(3) },
         intercom: { maxLength: maxLength(3) },
       },
+      wayTime: {
+        currentDate: {
+          required: requiredIf(this.timeWay === "По времени"),
+        },
+        currentTime: {
+          required: requiredIf(this.timeWay === "По времени"),
+        },
+      },
+      deal: {
+        minValue: minValue(this.sumOrder + 200),
+        required: requiredIf(this.typeDeal === "Сдача с"),
+      },
+
       currentRestaurant: {
         required: requiredIf(this.currentTypeWay === "Самовывоз"),
       },
@@ -306,6 +337,9 @@ export default {
     }),
   },
   methods: {
+    ...mapActions({
+      updateOrderListUser: "orders/updateOrderListUser",
+    }),
     addWayOrder(way) {
       this.currentTypeWay = way;
     },
@@ -330,19 +364,11 @@ export default {
             phone: "",
             email: "",
           },
-          address: {
-            street: "",
-            house: "",
-            porch: "",
-            floor: "",
-            flat: "",
-            intercom: "",
-          },
-          restaurant: {
-            currentRestaurant: "",
-          },
+          address: null,
+          restaurant: null,
+          typeWay: "",
+
           timeWay: {
-            typeWay: "",
             date: null,
             time: null,
           },
@@ -351,22 +377,22 @@ export default {
           },
           payment: "",
           comment: "",
+          totalSumOrder: 0,
+          promo: null,
         };
         newOrder.info.name = this.username;
         newOrder.info.phone = this.phone;
         newOrder.info.email = this.email;
-        if (this.currentTypeWay === "Доставка") {
-          newOrder.address.street = this.address.street;
-          newOrder.address.house = this.address.house;
-          newOrder.address.porch = this.address.porch;
-          newOrder.address.floor = this.address.floor;
-          newOrder.address.flat = this.address.flat;
-          newOrder.address.intercom = this.address.intercom;
-        } else {
-          newOrder.restaurant.currentRestaurant = this.currentRestaurant;
-        }
-        newOrder.timeWay.typeWay = this.currentTypeWay;
+        newOrder.totalSumOrder = this.sumOrder;
+        newOrder.payment = this.typePayment;
+        newOrder.comment = this.comment;
+        newOrder.typeWay = this.currentTypeWay;
 
+        if (this.currentTypeWay === "Доставка") {
+          newOrder.address = `${this.address.street} ${this.address.house}, подъезд: ${this.address.porch}, этаж: ${this.address.floor}, кв. ${this.address.flat}, домофон: ${this.address.intercom} `;
+        } else {
+          newOrder.restaurant = this.currentRestaurant;
+        }
         if (this.timeWay === "По времени") {
           newOrder.timeWay.date = this.wayTime.currentDate;
           newOrder.timeWay.time = this.wayTime.currentTime;
@@ -374,15 +400,13 @@ export default {
           newOrder.timeWay.time = this.timeWay;
         }
         if (this.typeDeal === "Без сдачи") {
-          newOrder.typeDeal.deal = null;
+          newOrder.typeDeal.deal = "Без сдачи";
         } else {
-          newOrder.typeDeal.deal = +this.deal;
+          newOrder.typeDeal.deal = `Сдача с ${this.deal}`;
         }
-        newOrder.payment = this.typePayment;
-        newOrder.comment = this.comment;
-        console.log(newOrder);
+
+        this.updateOrderListUser(newOrder);
       }
-      return;
     },
   },
 };

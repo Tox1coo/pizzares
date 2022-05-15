@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { getDatabase, ref, get, child } from "firebase/database";
+import { getDatabase, ref, get, child, onValue } from "firebase/database";
 import { firebaseConfig } from "@/store/config";
 
 export const orders = {
@@ -151,7 +151,25 @@ export const orders = {
           console.error(error);
         });
     },
-    async updateOrderListUser({ commit }, { newOrder }) {
+    async updateOrderListUser({ state, commit }, newOrder) {
+      const random = Math.floor(1 + Math.random() * (4 + 1 - 1));
+      newOrder.orderList = [];
+      newOrder.orderList = state.orderList;
+
+      switch (random) {
+        case 1:
+          newOrder.status = "Выполнен";
+          break;
+        case 2:
+          newOrder.status = "Едет к вам";
+          break;
+        case 3:
+          newOrder.status = "Обрабатывается";
+          break;
+        case 4:
+          newOrder.status = "Отмена";
+          break;
+      }
       console.log(newOrder);
     },
   },
