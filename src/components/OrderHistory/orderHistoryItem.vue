@@ -14,19 +14,25 @@
       <div class="history__item-top-item">
         <span>Заказ</span>
 
-        №{{ historyItem.orderNumber }}
+        <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
+          №{{ historyItem.orderNumber }}
+        </p>
       </div>
       <div class="history__item-top-item">
         <span>Cумма заказа</span>
-        {{ historyItem.totalSumOrder }} ₽
+        <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
+          {{ historyItem.totalSumOrder }} ₽
+        </p>
       </div>
       <div class="history__item-top-item">
         <span>Статус</span>
-        {{ historyItem.status }}
+        <p>{{ historyItem.status }}</p>
       </div>
       <div class="history__item-top-item">
         <span>Оплачено</span>
-        {{ historyItem.payment }}
+        <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
+          {{ historyItem.payment }}
+        </p>
       </div>
       <div :class="{ 'arrow-active': activeDropList }" class="arrow"></div>
     </div>
@@ -36,6 +42,7 @@
       </div>
       <div class="history__item-body-photo">
         <img
+          :class="{ cancel__img: historyItem.status === 'Отмена' }"
           v-for="photoProduct in historyItem.orderList"
           :key="photoProduct.id"
           :src="photoProduct.image"
@@ -112,6 +119,7 @@ export default {
       box-shadow: -3px 0px #fff;
       position: relative;
       margin-left: -8px;
+      position: relative;
     }
   }
 }
@@ -134,7 +142,19 @@ export default {
 }
 .cancel {
   background-color: #a5a5a5;
+  &__text {
+    color: #a5a5a5;
+  }
+  &__img {
+    -webkit-filter: grayscale(1); /* Webkit браузеры */
+    filter: gray; /* для IE6-9*/
+    filter: grayscale(1); /* W3C */
+  }
 }
+.product {
+  position: relative;
+}
+
 .arrow {
   width: 16px;
   height: 16px;

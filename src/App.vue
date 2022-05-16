@@ -52,6 +52,9 @@ export default {
   margin: 0;
   box-sizing: border-box;
 }
+hr {
+  margin: 0 !important;
+}
 html {
   background-color: #f9f9f9;
 }

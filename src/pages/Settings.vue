@@ -10,14 +10,21 @@
             :tabsList="userList"
           ></TabsList>
         </div>
-        <orderHistory></orderHistory>
+        <OrderHistory v-if="activeButton === 'История заказов'"></OrderHistory>
+        <UserSetting v-else-if="activeButton === 'Настройки'"></UserSetting>
       </div>
     </div>
   </div>
+  <OrderSideBar> <OrderList /></OrderSideBar>
 </template>
 
 <script>
-import orderHistory from "@/components/OrderHistory/orderHistory";
+import OrderHistory from "@/components/OrderHistory/OrderHistory";
+import UserSetting from "@/components/user/UserSetting";
+
+import OrderSideBar from "@/components/orders/OrderSideBar";
+import OrderList from "@/components/orders/OrderList";
+
 export default {
   data() {
     return {
@@ -25,12 +32,12 @@ export default {
       activeButton: "История заказов",
     };
   },
+  components: { OrderSideBar, OrderList, OrderHistory, UserSetting },
   methods: {
     activeSettingButton(activeButton) {
       this.activeButton = activeButton;
     },
   },
-  components: { orderHistory },
 };
 </script>
 

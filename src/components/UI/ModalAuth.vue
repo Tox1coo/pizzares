@@ -29,6 +29,7 @@ export default {
   position: fixed;
   z-index: 1000;
   display: flex;
+
   cursor: pointer;
   &__content {
     position: relative;
@@ -43,6 +44,8 @@ export default {
     min-width: 300px;
     cursor: default;
     display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 .close {
