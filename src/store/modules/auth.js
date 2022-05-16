@@ -132,7 +132,7 @@ export const auth = {
 
     async loggedUser({ dispatch, commit }) {
       const auth = getAuth();
-      onAuthStateChanged(auth, (user) => {
+      await onAuthStateChanged(auth, (user) => {
         if (user) {
           const db = getDatabase();
           const dbRef = ref(db);
@@ -158,27 +158,10 @@ export const auth = {
       const dbRef = ref(db, "3/orderNumber");
       onValue(dbRef, (snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
           commit("setOrderNumber", snapshot.val());
         }
       });
     },
-    /*     async updateOrderNumber({ commit }) {
-      const db = getDatabase();
-      const dbRef = ref(db, "3 / orderNumber");
-      get(child(dbRef, `3/orderNumber`))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            console.log(snapshot.val());
-            // commit("setOrderNumber", snapshot.val());
-          } else {
-            console.log("No data available");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }, */
   },
 
   getters: {

@@ -46,7 +46,12 @@
                   <hr />
                 </div>
                 <div class="user__params">
-                  <a @click="$router.push('/settingsUser')">Настройки</a>
+                  <a
+                    @click="
+                      (visibleUserParams = false), $router.push('/settingsUser')
+                    "
+                    >Мой аккаунт</a
+                  >
                   <hr />
                 </div>
                 <div
@@ -216,7 +221,7 @@ hr {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 208px;
+  height: fit-content;
   width: 285px;
   background: #fff;
   border: 1px solid #f0f0f0;

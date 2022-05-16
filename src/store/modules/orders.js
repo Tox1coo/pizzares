@@ -17,6 +17,7 @@ export const orders = {
     sumOrder: 0,
     visibleSideBarOrder: false,
     restaurantList: [],
+    historyOrderList: [],
   }),
   getters: {
     getListOrders: (state) => state.orderList,
@@ -45,6 +46,9 @@ export const orders = {
     },
     setrestaurantList(state, restaurantList) {
       state.restaurantList = restaurantList;
+    },
+    setHistoryOrderList(state, historyOrderList) {
+      state.historyOrderList = historyOrderList;
     },
   },
   actions: {
@@ -165,9 +169,8 @@ export const orders = {
     async updateOrderListUser({ state, commit }, newOrder) {
       const random = Math.floor(1 + Math.random() * (4 + 1 - 1));
 
-      newOrder.orderList = [];
-      newOrder.orderList = state.orderList;
-
+      newOrder.orderList =
+        newOrder?.orderList == undefined ? state.orderList : newOrder.orderList;
       const db = getDatabase();
 
       switch (random) {
@@ -187,12 +190,24 @@ export const orders = {
       const updates = {};
       const newNumber = ++newOrder.orderNumber;
       updates["3/orderNumber"] = newNumber;
-      const newPostKey = push(child(ref(db), "3")).key;
+      const newOrderKey = push(child(ref(db), "3")).key;
+      console.log(newOrderKey);
       const UID_USER = newOrder.UID_USER;
+      console.log(UID_USER);
       delete newOrder.UID_USER;
-      set(ref(db, "3/users/" + UID_USER + "/orders/" + newPostKey), newOrder);
+      set(ref(db, "3/users/" + UID_USER + "/orders/" + newOrderKey), newOrder);
 
       return update(ref(db), updates);
+    },
+    async historyOrderUser({ commit }, UID_USER) {
+      const db = getDatabase();
+      await get(ref(db, "3/users/" + UID_USER + "/orders/"))
+        .then((snapshot) => {
+          commit("setHistoryOrderList", snapshot.val());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
   namespaced: true,

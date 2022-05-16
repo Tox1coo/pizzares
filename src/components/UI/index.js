@@ -18,6 +18,7 @@ import CarouselItem from "@/components/UI/CarouselItem";
 import RadioList from "@/components/UI/RadioList";
 import RadioListItem from "@/components/UI/RadioListItem";
 import DropList from "@/components/UI/DropList";
+import DropHistoryOrders from "@/components/UI/DropHistoryOrders";
 export default [
   NavBar,
   CityList,
@@ -39,4 +40,5 @@ export default [
   RadioListItem,
   CarouselItem,
   DropList,
+  DropHistoryOrders,
 ];
