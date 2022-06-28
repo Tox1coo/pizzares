@@ -20,7 +20,7 @@ export const orders = {
     historyOrderList: [],
   }),
   getters: {
-    getListOrders: (state) => state.orderList,
+    getListOrders: async (state) => state.orderList,
   },
   mutations: {
     setListOrders(state, orderList) {
@@ -74,15 +74,15 @@ export const orders = {
       const checkIsInOrder =
         productItem?.type === undefined
           ? state.orderList.findIndex(
-              (productItemInOrder) =>
-                productItemInOrder.allPrice === productItem.allPrice &&
-                productItemInOrder.title === productItem.title
-            )
+            (productItemInOrder) =>
+              productItemInOrder.allPrice === productItem.allPrice &&
+              productItemInOrder.title === productItem.title
+          )
           : state.orderList.findIndex(
-              (productItemInOrder) =>
-                productItemInOrder.allPrice === productItem.allPrice &&
-                productItemInOrder.type === productItem.type
-            );
+            (productItemInOrder) =>
+              productItemInOrder.allPrice === productItem.allPrice &&
+              productItemInOrder.type === productItem.type
+          );
 
       const stateOrderListItem = JSON.parse(JSON.stringify(state.orderList));
       stateOrderListItem[checkIsInOrder].countInOrder++;
@@ -95,15 +95,15 @@ export const orders = {
       const checkIsInOrder =
         productItem?.type === undefined
           ? state.orderList.findIndex(
-              (productItemInOrder) =>
-                productItemInOrder.allPrice === productItem.allPrice &&
-                productItemInOrder.title === productItem.title
-            )
+            (productItemInOrder) =>
+              productItemInOrder.allPrice === productItem.allPrice &&
+              productItemInOrder.title === productItem.title
+          )
           : state.orderList.findIndex(
-              (productItemInOrder) =>
-                productItemInOrder.allPrice === productItem.allPrice &&
-                productItemInOrder.type === productItem.type
-            );
+            (productItemInOrder) =>
+              productItemInOrder.allPrice === productItem.allPrice &&
+              productItemInOrder.type === productItem.type
+          );
 
       const stateOrderListItem = JSON.parse(JSON.stringify(state.orderList));
       stateOrderListItem[checkIsInOrder].countInOrder--;

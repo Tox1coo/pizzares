@@ -56,7 +56,7 @@
                 </div>
                 <div
                   @click="
-                    (visibleUserParams = false), setIsAuth(false), logoutUser()
+                    (visibleUserParams = false), $router.push('/'), setIsAuth(false), logoutUser()
                   "
                   class="user__exit"
                 >
