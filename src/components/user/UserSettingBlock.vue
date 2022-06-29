@@ -100,7 +100,7 @@
         <div v-else-if="typeForm === 'password'" class="setting__form-items">
           <div class="setting__form-items-input">
             <MyInput
-              v-model="oldPassword"
+              v-model="userPassword.oldPassword"
               :style="{ width: `${250}px` }"
               :typeInput="'password'"
               :placeholderInput="'Старый пароль'"
@@ -110,7 +110,7 @@
             ></MyInput>
 
             <MyInput
-              v-model="newPassword"
+              v-model="userPassword.newPassword"
               :style="{ width: `${250}px` }"
               :placeholderInput="'Старый пароль'"
               :typeInput="'password'"
@@ -118,9 +118,17 @@
               :errorMessage="v$.newPassword?.$errors[0]?.$message"
               :error="v$.newPassword?.$error"
             ></MyInput>
-
+            <span
+              class="error"
+              v-if="v$.userPassword.newPassword.$error || errorPasswordLang"
+            >
+              {{ v$.userPassword.newPassword.$errors[0].$message }}
+            </span>
+            <span class="error" v-if="errorPasswordLang">
+              {{ errorPassword }}
+            </span>
             <MyInput
-              v-model="confirmNewPassword"
+              v-model="userPassword.confirmNewPassword"
               :style="{ width: `${250}px` }"
               :typeInput="'password'"
               :placeholderInput="'Подтвердите пароль..'"
@@ -128,10 +136,21 @@
               :errorMessage="v$.confirmNewPassword?.$errors[0]?.$message"
               :error="v$.confirmNewPassword?.$error"
             ></MyInput>
+            <span
+              class="error"
+              v-if="
+                v$.userPassword.confirmNewPassword.$error || errorPasswordLang
+              "
+            >
+              {{ v$.userPassword.confirmNewPassword.$errors[0].$message }}
+            </span>
+            <span class="error" v-if="errorPasswordLang">
+              {{ errorPassword }}
+            </span>
           </div>
 
           <MyButton
-            @click="(changeSetting = false), updateUserPassword()"
+            @click="(changeSetting = false), checkUserPassword()"
             class="setting__form-btn"
             >Сохранить изменения</MyButton
           >
@@ -184,7 +203,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import useVuelidate from "@vuelidate/core";
-
+import { email, required, sameAs } from "@vuelidate/validators";
 export default {
   data() {
     return {
@@ -199,6 +218,26 @@ export default {
       userUpdate: {
         UID: "",
         subscribe: false,
+      },
+      userPassword: {
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      },
+      errorPassword: "",
+      errorPasswordLang: "",
+    };
+  },
+  validations() {
+    return {
+      email: { email, required },
+      userPassword: {
+        oldPassword: { required },
+        newPassword: { required },
+        confirmNewPassword: {
+          required,
+          sameAs: sameAs(this.userPassword.newPassword),
+        },
       },
     };
   },
@@ -223,12 +262,40 @@ export default {
   },
   methods: {
     ...mapActions({
-      updateUserInfo: "user/updateUserInfo",
+      updateUserSubscribe: "user/updateUserSubscribe",
+      checkUserPass: "user/checkUserPass",
+      updateUserPass: "user/updateUserPass",
     }),
     updateUserSubs() {
       this.userUpdate.UID = this.user.uid;
       this.userUpdate.subscribe = this.check;
-      this.updateUserInfo(this.userUpdate);
+      this.updateUserSubscribe(this.userUpdate);
+    },
+
+    async checkUserPassword() {
+      const item = await this.checkUserPass(this.userPassword.oldPassword);
+      if (item) {
+        this.updateUserPassword();
+      }
+    },
+    updateUserPassword() {
+      this.v$.$validate();
+      console.log(this.v$);
+      if (!this.v$.$error) {
+        if (
+          (this.userPassword.newPassword.search(/[a-zA-Z]/g) != -1 &&
+            this.userPassword.newPassword.search(/[а-яА-Я]/g) != 0) ||
+          (this.userPassword.confirmNewPassword.search(/[a-zA-Z]/g) != -1 &&
+            this.userPassword.confirmNewPassword.search(/[а-яА-Я]/g) != 0)
+        ) {
+          this.updateUserPass(this.userPassword);
+        } else {
+          this.errorPassword = "Пароль не должен содержать русских символов";
+          this.errorPasswordLang = true;
+        }
+      } else {
+        this.errorPasswordLang = false;
+      }
     },
   },
 };
@@ -356,5 +423,15 @@ input[type="checkbox"]:checked + .label::after {
     background-size: 12px 12px;
     background-color: #ff7010;
   }
+}
+
+.error {
+  font-size: 14px;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  color: #ff4040 !important;
+  opacity: 1 !important;
+  margin-top: 5px !important;
 }
 </style>
