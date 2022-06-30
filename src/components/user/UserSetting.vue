@@ -30,9 +30,7 @@ export default {
 
     };
   },
-  mounted() {
-    console.log(this.currentUser);
-  },
+
   computed: { ...mapState({ currentUser: (state) => state.auth.currentUser }) },
 };
 </script>

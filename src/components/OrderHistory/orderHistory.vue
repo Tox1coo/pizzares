@@ -41,7 +41,7 @@ export default {
     Paginate,
   },
   async mounted() {
-    this.loadInfo();
+    await this.loadInfo();
   },
   mixins: [paginationMixin],
   methods: {

@@ -41,6 +41,13 @@
         </svg>
         <span>Изменить</span>
       </div>
+      <div
+        @click="changeSetting = false"
+        v-if="changeSetting"
+        class="close setting__form-header-right"
+      >
+        <span></span>
+      </div>
     </div>
     <Transition name="nested">
       <form
@@ -59,7 +66,9 @@
               :nameInput="'Имя'"
               :errorMessage="v$.username?.$errors[0]?.$message"
               :error="v$.username?.$error"
-            ></MyInput>
+            >
+              <span class="error" v-if="error">{{ error }}</span></MyInput
+            >
 
             <MyInput
               v-model="phone"
@@ -69,7 +78,9 @@
               :error="v$.phone?.$error"
               :typeInput="'tel'"
               :labelInput="'Номер телефона*'"
-            ></MyInput>
+            >
+              <span class="error" v-if="error">{{ error }}</span>
+            </MyInput>
 
             <MyInput
               v-model="email"
@@ -79,7 +90,10 @@
               :labelInput="'Почта'"
               :errorMessage="v$.email?.$errors[0]?.$message"
               :error="v$.email?.$error"
-            ></MyInput>
+            >
+              <span class="error" v-if="error">{{ error }}</span></MyInput
+            >
+
             <MyInput
               :style="{ width: `${250}px` }"
               :placeholderInput="'Дата'"
@@ -91,9 +105,7 @@
             >
             </MyInput>
           </div>
-          <MyButton
-            @click="(changeSetting = false), updateUserInfo()"
-            class="setting__form-btn"
+          <MyButton @click="updateUserInfo()" class="setting__form-btn"
             >Сохранить изменения</MyButton
           >
         </div>
@@ -105,9 +117,13 @@
               :typeInput="'password'"
               :placeholderInput="'Старый пароль'"
               :labelInput="'Старый пароль*'"
-              :errorMessage="v$.oldPassword?.$errors[0]?.$message"
-              :error="v$.oldPassword?.$error"
-            ></MyInput>
+              :errorMessage="v$.userPassword.oldPassword?.$errors[0]?.$message"
+              :error="v$.userPassword.oldPassword?.$error"
+            >
+              <span class="error" v-if="checkPass === false"
+                >Неверный пароль</span
+              >
+            </MyInput>
 
             <MyInput
               v-model="userPassword.newPassword"
@@ -115,43 +131,32 @@
               :placeholderInput="'Старый пароль'"
               :typeInput="'password'"
               :labelInput="'Новый пароль*'"
-              :errorMessage="v$.newPassword?.$errors[0]?.$message"
-              :error="v$.newPassword?.$error"
-            ></MyInput>
-            <span
-              class="error"
-              v-if="v$.userPassword.newPassword.$error || errorPasswordLang"
+              :errorMessage="v$.userPassword.newPassword?.$errors[0]?.$message"
+              :error="v$.userPassword.newPassword?.$error"
             >
-              {{ v$.userPassword.newPassword.$errors[0].$message }}
-            </span>
-            <span class="error" v-if="errorPasswordLang">
-              {{ errorPassword }}
-            </span>
+              <span class="error" v-if="errorLang">
+                {{ error }}
+              </span></MyInput
+            >
+
             <MyInput
               v-model="userPassword.confirmNewPassword"
               :style="{ width: `${250}px` }"
               :typeInput="'password'"
               :placeholderInput="'Подтвердите пароль..'"
               :labelInput="'Подтвердите пароль*'"
-              :errorMessage="v$.confirmNewPassword?.$errors[0]?.$message"
-              :error="v$.confirmNewPassword?.$error"
-            ></MyInput>
-            <span
-              class="error"
-              v-if="
-                v$.userPassword.confirmNewPassword.$error || errorPasswordLang
+              :errorMessage="
+                v$.userPassword.confirmNewPassword?.$errors[0]?.$message
               "
+              :error="v$.userPassword.confirmNewPassword?.$error"
             >
-              {{ v$.userPassword.confirmNewPassword.$errors[0].$message }}
-            </span>
-            <span class="error" v-if="errorPasswordLang">
-              {{ errorPassword }}
-            </span>
+              <span class="error" v-if="errorLang">
+                {{ error }}
+              </span></MyInput
+            >
           </div>
 
-          <MyButton
-            @click="(changeSetting = false), checkUserPassword()"
-            class="setting__form-btn"
+          <MyButton @click="checkUserPassword()" class="setting__form-btn"
             >Сохранить изменения</MyButton
           >
         </div>
@@ -180,11 +185,11 @@
         <div v-if="typeForm == 'info'" class="setting__form-items-info">
           <div>
             <label for=""> Имя* </label>
-            <p>{{ userInfo?.username }}</p>
+            <p>{{ user.displayName }}</p>
           </div>
           <div>
             <label for=""> Номер телефона </label>
-            <p>{{ this.user.phoneNumber || "+7" }}</p>
+            <p>{{ this.phone || "+7" }}</p>
           </div>
           <div>
             <label for=""> Почта* </label>
@@ -203,18 +208,27 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import useVuelidate from "@vuelidate/core";
-import { email, required, sameAs } from "@vuelidate/validators";
+import {
+  email,
+  required,
+  sameAs,
+  minLength,
+  maxLength,
+} from "@vuelidate/validators";
+
 export default {
   data() {
     return {
       v$: useVuelidate(),
 
       email: this.user.email || "",
-      phone: this.user.phoneNumber != null || "",
-      username: this.userInfo?.username || this.user.displayName != null || "",
+      phone: '',
+      username: this.userInfo?.username || this.user.displayName || "",
       dateOfBirth: this.userInfo?.dateofBirth || "",
       check: false,
       changeSetting: false,
+      checkPass: null,
+      newUserInfo: {},
       userUpdate: {
         UID: "",
         subscribe: false,
@@ -224,22 +238,28 @@ export default {
         newPassword: "",
         confirmNewPassword: "",
       },
-      errorPassword: "",
-      errorPasswordLang: "",
+      error: "",
+      errorLang: "",
     };
   },
+
   validations() {
     return {
       email: { email, required },
+      username: { required, minLength: minLength(2), maxLength: maxLength(15) },
+      phone: { maxLength: maxLength(11), minLength: minLength(11) },
       userPassword: {
         oldPassword: { required },
-        newPassword: { required },
+        newPassword: { required, minLength: minLength(8) },
         confirmNewPassword: {
           required,
           sameAs: sameAs(this.userPassword.newPassword),
         },
       },
     };
+  },
+  async mounted() {
+    this.phone = await this.userInfo.settings.phone;
   },
   props: {
     settingTitle: {
@@ -255,16 +275,20 @@ export default {
       default: () => {},
     },
   },
+
   computed: {
     ...mapState({
       userInfo: (state) => state.auth.userInfo,
+      message: (state) => state.auth.message,
     }),
   },
+
   methods: {
     ...mapActions({
       updateUserSubscribe: "user/updateUserSubscribe",
       checkUserPass: "user/checkUserPass",
       updateUserPass: "user/updateUserPass",
+      getNewUserInfo: "user/getNewUserInfo",
     }),
     updateUserSubs() {
       this.userUpdate.UID = this.user.uid;
@@ -273,15 +297,16 @@ export default {
     },
 
     async checkUserPassword() {
-      const item = await this.checkUserPass(this.userPassword.oldPassword);
-      if (item) {
+      this.checkPass = await this.checkUserPass(this.userPassword.oldPassword);
+      if (this.checkPass) {
         this.updateUserPassword();
       }
     },
+
     updateUserPassword() {
       this.v$.$validate();
-      console.log(this.v$);
-      if (!this.v$.$error) {
+
+      if (this.v$.$error) {
         if (
           (this.userPassword.newPassword.search(/[a-zA-Z]/g) != -1 &&
             this.userPassword.newPassword.search(/[а-яА-Я]/g) != 0) ||
@@ -289,12 +314,61 @@ export default {
             this.userPassword.confirmNewPassword.search(/[а-яА-Я]/g) != 0)
         ) {
           this.updateUserPass(this.userPassword);
+          this.changeSetting = false;
         } else {
-          this.errorPassword = "Пароль не должен содержать русских символов";
-          this.errorPasswordLang = true;
+          this.error = "Пароль не должен содержать русских символов";
+          this.errorLang = true;
         }
       } else {
-        this.errorPasswordLang = false;
+        this.errorLang = false;
+      }
+    },
+
+    updateUserInfo() {
+      this.v$.$validate();
+
+      if (
+        !this.v$.username?.$error &&
+        !this.v$.phone?.$error &&
+        !this.v$.email?.$error
+      ) {
+        if (
+          ["7", "8"].indexOf(this.phone[0]) > -1 ||
+          this.username.length > 0 ||
+          this.email.length > 0
+        ) {
+
+          this.newUserInfo.phone = this.phone || '';
+          this.newUserInfo.username = this.username;
+          this.newUserInfo.email = this.email || '';
+          this.newUserInfo.oldNumberPhone = this.userInfo.settings.phone;
+          this.getNewUserInfo(this.newUserInfo);
+          this.error = "";
+          this.changeSetting = false;
+
+
+          /*
+          if(this.phone !== this.user.phoneNumber) {
+            this.error = ''
+          } else {
+            this.error = "Введите новый номер телефона";
+          }
+
+          if(this.email !== this.user.email) {
+            this.error = ''
+          } else {
+            this.error = "Введите новый email";
+
+          }
+          if(this.username !== this.user.displayName) {
+            this.error = ''
+          } else {
+            this.error = "Введите новое имя пользователя";
+
+          } */
+        } else {
+          this.error = "Телефон должен начинаться с 7 или 8";
+        }
       }
     },
   },
@@ -433,5 +507,41 @@ input[type="checkbox"]:checked + .label::after {
   color: #ff4040 !important;
   opacity: 1 !important;
   margin-top: 5px !important;
+}
+
+/* close */
+
+.close {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  span {
+    position: absolute;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      transform: translateX(-50%) rotate(-45deg);
+      width: 25px;
+      height: 2px;
+      top: 0;
+      left: 50%;
+
+      background-color: #ff7010;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      transform: translateX(-50%) rotate(45deg);
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 25px;
+      height: 2px;
+      background-color: #ff7010;
+    }
+  }
 }
 </style>

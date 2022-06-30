@@ -8,7 +8,7 @@ import {
 	set,
 	push,
 } from "firebase/database";
-import { getAuth, reauthenticateWithCredential, signInWithEmailAndPassword, EmailAuthProvider, updatePassword } from "firebase/auth";
+import { getAuth, reauthenticateWithCredential, EmailAuthProvider, updatePassword, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
 import { firebaseConfig } from "@/store/config";
 
 export const user = {
@@ -52,15 +52,48 @@ export const user = {
 			return check
 		},
 
-		updateUserPass({ commit }, userPassword) {
+		updateUserPass({ commit }, userPassword, currentUser) {
 			const auth = getAuth();
 			const user = auth.currentUser;
 
 			updatePassword(user, userPassword.newPassword).then(() => {
-				console.log(2);
 			}).catch(error => {
 				console.log(error);
 			})
+		},
+
+		async getNewUserInfo({ commit, dispatch }, userInfo) {
+			const auth = getAuth();
+			const user = auth.currentUser;
+			const db = getDatabase();
+
+			if (userInfo.username !== user.displayName) {
+				await updateProfile(user, {
+					displayName: userInfo.username
+				}).then(() => {
+					commit('updateMessage', 'Данные обновились')
+				}).catch((error) => {
+					console.log(error);
+				})
+			}
+
+			if (userInfo.phone !== userInfo.oldNumberPhone) {
+				set(
+					ref(db, `3/users/${user.uid}/settings/phone`),
+					userInfo.phone
+				);
+				commit('updateMessage', 'Данные обновились')
+
+			}
+
+			if (userInfo.email !== user.email) {
+				await updateEmail(user, userInfo.email).then(() => {
+					commit('updateMessage', 'Данные обновились')
+				}).catch((error) => {
+					console.log(error);
+				})
+			}
+
 		}
 	},
 	namespaced: true,

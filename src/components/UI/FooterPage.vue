@@ -23,11 +23,24 @@
         </div>
         <div class="footer__social">
           <h2>Контакты</h2>
-          <a class="social" href="tel:79262231011"> +7 (926) 223-10-11 </a>
-          <a class="social" href> Москва, ул. Юных Ленинцев, д. 99 </a>
-          <div class="footer__sosial-links">
-            <a href="https://ru-ru.facebook.com">Facebook</a>
-            <a href="https://www.instagram.com">Instagram</a>
+          <div>
+            <img :src="require('../../assets/phone.svg')" alt="">
+            <a class="social" href="tel:79262231011"> +7 (926) 223-10-11 </a>
+          </div>
+          <div>
+            <img :src="require('../../assets/Location.svg')" alt="">
+            <a class="social" href> Москва, ул. Юных Ленинцев, д. 99 </a>
+
+          </div>
+          <div class="footer__social-links">
+            <div>
+              <img :src="require('../../assets/facebook.svg')" alt="">
+              <a href="https://ru-ru.facebook.com">Facebook</a>
+            </div>
+            <div>
+              <img :src="require('../../assets/inst.svg')" alt="">
+              <a href="https://www.instagram.com">Instagram</a>
+            </div>
           </div>
         </div>
       </div>
@@ -65,6 +78,13 @@ export default {
   padding: 32px;
   background-color: #fff;
   border: 1px solid #f0f0f0;
+  a {
+    color: #000;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
   &__inner {
     display: flex;
     justify-content: space-between;
@@ -72,6 +92,14 @@ export default {
   &__info {
     ul {
       list-style: none;
+
+      li {
+        margin-bottom: 20px;
+
+        &:first-child {
+          margin-top: 22px;
+        }
+      }
     }
   }
   &__copyright {
@@ -80,11 +108,29 @@ export default {
     justify-content: space-between;
   }
   &__social {
+    div {
+      display: flex;
+      align-items: center;
+      img {
+        margin-right: 12px;
+      }
+      margin-top: 20px;
+    }
     display: flex;
     flex-direction: column;
     &-links {
       display: flex;
+      align-items: center;
+
+      div {
+        &:first-child {
+          margin-right: 24px;
+        }
+        margin-top: 0;
+      }
     }
+
+
   }
 }
 .title {
