@@ -52,9 +52,7 @@ export default {
       visibleModalLogin: true,
     };
   },
-  mounted() {
-    console.log(this.$router);
-  },
+
   methods: {
     ...mapMutations({
       setVisibleModal: "auth/setVisibleModal",

@@ -22,6 +22,10 @@ export default {
   color: #fff;
   font-size: 16px;
   border: none;
+  transition: background-color 0.15s ease 0s;
   cursor: pointer;
+  &:hover {
+    background-color: #bf4300;
+  }
 }
 </style>

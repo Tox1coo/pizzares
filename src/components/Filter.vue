@@ -69,7 +69,6 @@ export default {
       this.productName = productName;
     },
     checkProduct() {
-      console.log(this.allFilter);
       let copyProduct;
       const allId = [];
       if (this.allFilter.length > 0) {

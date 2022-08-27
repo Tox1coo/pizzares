@@ -59,9 +59,18 @@ export default {
   computed: {
     ...mapState({ cityList: (state) => state.city.cityList }),
   },
+  mounted() {
+    const that = this;
+    document.addEventListener("click", function (event) {
+      if (
+        event.target.className !== "city" &&
+        event.target.parentElement.className !== "drop"
+      )
+        that.visibleDropList = false;
+    });
+  },
   methods: {
     /*     rotateCurrentCity(city) {
-      console.log(city);
       this.$emit("currentCity", city);
     }, */
   },

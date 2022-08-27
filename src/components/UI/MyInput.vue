@@ -75,6 +75,7 @@ export default {
 <style scoped lang="scss">
 .form {
   margin-top: 15px;
+  width: 300px;
 }
 .dropList {
   cursor: pointer;
@@ -108,5 +109,11 @@ label {
   display: inline-block;
   color: red;
   margin-top: 5px;
+}
+
+.delivery {
+  &__form {
+    min-width: 100%;
+  }
 }
 </style>

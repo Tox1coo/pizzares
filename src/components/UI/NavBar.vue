@@ -56,7 +56,10 @@
                 </div>
                 <div
                   @click="
-                    (visibleUserParams = false), $router.push('/'), setIsAuth(false), logoutUser()
+                    (visibleUserParams = false),
+                      $router.push('/'),
+                      setIsAuth(false),
+                      logoutUser()
                   "
                   class="user__exit"
                 >
@@ -143,6 +146,18 @@ export default {
     check(check) {
       this.setVisibleModal(check);
     },
+  },
+
+  mounted() {
+    const that = this;
+    document.addEventListener("click", function (event) {
+      if (
+        event.target.parentElement.className !== "panel__right-user" &&
+        event.target.parentElement.className !== "user__bonus" &&
+        event.target.parentElement.className !== "panel__right-auth"
+      )
+        that.visibleUserParams = false;
+    });
   },
 
   computed: {

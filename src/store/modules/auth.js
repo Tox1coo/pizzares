@@ -49,20 +49,17 @@ export const auth = {
       await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const db = getDatabase();
-          console.log(auth);
 
           const dbRef = ref(getDatabase());
           get(child(dbRef, `3/users/${userCredential.user.uid}`))
             .then((snapshot) => {
               if (snapshot.exists()) {
-                console.log(snapshot.val());
                 commit("setUserInfo", snapshot.val());
               } else {
                 console.log("No data available");
               }
             })
-            .catch((error) => {});
-          console.log(userCredential);
+            .catch((error) => { });
           commit("setCurrentUser", userCredential.user);
           dispatch("updateOrderNumber");
         })
@@ -146,8 +143,7 @@ export const auth = {
                 console.log("No data available");
               }
             })
-            .catch((error) => {});
-          console.log(user);
+            .catch((error) => { });
           commit("setCurrentUser", user);
           commit("setIsAuth", true);
         }

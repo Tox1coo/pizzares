@@ -57,6 +57,7 @@
         class="form__order-way delivery"
       >
         <MyInput
+          class="delivery__form"
           v-model="address.street"
           :labelInput="'Улица*:'"
           :typeInput="'text'"
@@ -116,6 +117,7 @@
         <MyInput
           v-model="currentRestaurant"
           :typeInput="''"
+          class="delivery__form"
           :labelInput="'Ресторан*:'"
           :placeholderInput="'Выберите ресторан'"
           :errorMessage="v$.currentRestaurant.$errors[0]?.$message"
@@ -354,7 +356,6 @@ export default {
     },
     async submitOrder() {
       this.v$.$validate();
-      console.log(this.v$);
       if (!this.v$.$error && this.orderList.length > 0) {
         const newOrder = {
           info: {
@@ -405,7 +406,6 @@ export default {
         } else {
           newOrder.typeDeal.deal = `Сдача с ${this.deal}`;
         }
-        console.log();
         await this.updateOrderListUser(
           newOrder,
           this.orderNumber,
@@ -527,6 +527,12 @@ export default {
   }
   &__list {
     flex: 1 1;
+  }
+}
+
+.delivery {
+  &__form {
+    min-width: 100%;
   }
 }
 </style>

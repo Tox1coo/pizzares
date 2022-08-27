@@ -1,5 +1,5 @@
 <template>
-  <div class="products">
+  <div :id="`${categoryName}`" class="products">
     <div class="products__header">
       <h2>{{ categoryName }}</h2>
       <FilterButton
@@ -7,13 +7,22 @@
         v-if="categoryName == 'Пицца' || categoryName == 'Суши'"
       ></FilterButton>
     </div>
-    <div class="products__list">
+    <div v-if="productList.length > 0" class="products__list">
       <ProductsItem
         v-for="productItem in productList"
         :key="productItem.id"
         :productItem="productItem"
         @visibleDialog="visibleDialog"
       ></ProductsItem>
+    </div>
+    <div v-else class="products__empty">
+      <img
+        width="300"
+        height="300"
+        :src="require('@/assets/order.svg')"
+        alt=""
+      />
+      <h2>Ой, категория товаров пуста! :(</h2>
     </div>
   </div>
   <Filter
@@ -59,7 +68,6 @@ export default {
       setFilterList: "product/setFilterList",
     }),
     visibleDialog(product, active) {
-      console.log(this.isAuth);
       if (this.isAuth != false) {
         this.productItem = product;
         this.showDialog = active;
@@ -88,7 +96,17 @@ export default {
     gap: 20px 30px;
     flex-wrap: wrap;
   }
-
+  &__empty {
+    height: 100%;
+    color: #ff7010;
+    font-family: "OpenSans", "Helvetica";
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
   &__header {
     display: flex;
     justify-content: space-between;

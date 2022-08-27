@@ -1,8 +1,10 @@
 <template>
   <div class="category">
     <CategoryItem
+      @click="scrollToProducts(categoryItem)"
       v-for="categoryItem in categoryList"
       :key="categoryItem"
+      v-once
       :categoryName="categoryItem"
     ></CategoryItem>
   </div>
@@ -16,6 +18,16 @@ export default {
     categoryList: {
       type: Array,
       required: true,
+    },
+  },
+  methods: {
+    scrollToProducts(categoryName) {
+      const product = document.getElementById(categoryName.name);
+      product.scrollIntoView({
+        block: "center",
+        inline: "center",
+        behavior: "smooth",
+      });
     },
   },
 };

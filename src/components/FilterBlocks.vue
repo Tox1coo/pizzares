@@ -32,7 +32,6 @@ export default {
   },
   watch: {
     allFilters(newAllFilter) {
-      console.log(newAllFilter);
       if (newAllFilter.length === 0) {
         this.allFilter = [];
       }

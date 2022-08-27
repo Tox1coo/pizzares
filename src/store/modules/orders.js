@@ -20,7 +20,7 @@ export const orders = {
     historyOrderList: [],
   }),
   getters: {
-    getListOrders: async (state) => state.orderList,
+    getListOrders: (state) => state.orderList,
   },
   mutations: {
     setListOrders(state, orderList) {
@@ -191,9 +191,7 @@ export const orders = {
       const newNumber = ++newOrder.orderNumber;
       updates["3/orderNumber"] = newNumber;
       const newOrderKey = push(child(ref(db), "3")).key;
-      console.log(newOrderKey);
       const UID_USER = newOrder.UID_USER;
-      console.log(UID_USER);
       delete newOrder.UID_USER;
       set(ref(db, "3/users/" + UID_USER + "/orders/" + newOrderKey), newOrder);
 

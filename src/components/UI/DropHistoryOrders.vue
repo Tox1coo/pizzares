@@ -60,7 +60,6 @@ export default {
       this.$emit("update:visibleDropList", false);
     },
     repeatOrder() {
-      console.log(this.orderItem);
       this.orderItemClone = this.orderItem;
 
       this.orderItemClone.UID_USER = "";
