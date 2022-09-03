@@ -76,6 +76,9 @@ export default {
 .form {
   margin-top: 15px;
   width: 300px;
+  @media (max-width: 350px) {
+    width: 230px;
+  }
 }
 .dropList {
   cursor: pointer;

@@ -32,6 +32,9 @@ export default {
   border: 1px solid #fff;
   position: relative;
   cursor: pointer;
+  @media (max-width: 630px) {
+    min-width: 54%;
+  }
 }
 .text {
   position: absolute;

@@ -1,9 +1,9 @@
 <template>
-  <form @submit.prevent class="form" action="">
+  <div class="form">
     <label for="">Проверить адрес доставки</label>
     <InputCity v-model="currentCity"></InputCity>
     <MyButton class="btn">Проверить</MyButton>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -33,11 +33,16 @@ export default {
   label {
     margin-right: 16px;
     font-size: 18px;
+    @media (max-width: 800px) {
+      display: none;
+    }
   }
 }
 
 .btn {
-  height: 106%;
-  padding: 13px 32px;
+  padding: 17px 32px;
+  @media (max-width: 470px) {
+    display: none;
+  }
 }
 </style>

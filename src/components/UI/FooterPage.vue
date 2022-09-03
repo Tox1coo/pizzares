@@ -24,21 +24,20 @@
         <div class="footer__social">
           <h2>Контакты</h2>
           <div>
-            <img :src="require('../../assets/phone.svg')" alt="">
+            <img :src="require('../../assets/phone.svg')" alt="" />
             <a class="social" href="tel:79262231011"> +7 (926) 223-10-11 </a>
           </div>
           <div>
-            <img :src="require('../../assets/Location.svg')" alt="">
+            <img :src="require('../../assets/Location.svg')" alt="" />
             <a class="social" href> Москва, ул. Юных Ленинцев, д. 99 </a>
-
           </div>
           <div class="footer__social-links">
             <div>
-              <img :src="require('../../assets/facebook.svg')" alt="">
+              <img :src="require('../../assets/facebook.svg')" alt="" />
               <a href="https://ru-ru.facebook.com">Facebook</a>
             </div>
             <div>
-              <img :src="require('../../assets/inst.svg')" alt="">
+              <img :src="require('../../assets/inst.svg')" alt="" />
               <a href="https://www.instagram.com">Instagram</a>
             </div>
           </div>
@@ -74,7 +73,7 @@ export default {
 
 <style scoped lang="scss">
 .footer {
-  flex: 1 1;
+  flex: 0 1;
   padding: 32px;
   background-color: #fff;
   border: 1px solid #f0f0f0;
@@ -88,6 +87,8 @@ export default {
   &__inner {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   &__info {
     ul {
@@ -106,6 +107,13 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @media (max-width: 935px) {
+      order: 3;
+      margin-top: 15px;
+      span {
+        margin-top: 10px;
+      }
+    }
   }
   &__social {
     div {
@@ -129,8 +137,6 @@ export default {
         margin-top: 0;
       }
     }
-
-
   }
 }
 .title {

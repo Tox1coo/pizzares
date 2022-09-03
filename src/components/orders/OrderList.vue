@@ -70,6 +70,7 @@ h2 {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   &-bottom {
     padding: 12px 20px;
     display: flex;
@@ -79,6 +80,9 @@ h2 {
     span {
       font-weight: 600;
       color: #ff7010;
+    }
+    @media (max-width: 420px) {
+      padding: 12px 0px;
     }
   }
   &-btn {

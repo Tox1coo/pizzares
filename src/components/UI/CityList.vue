@@ -87,6 +87,9 @@ export default {
 
   cursor: pointer;
   margin: 0px 55px 0 10px;
+  @media (max-width: 970px) {
+    margin: 0px 15px 0 10px;
+  }
 }
 ul {
   list-style: none;

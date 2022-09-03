@@ -93,8 +93,12 @@ export default {
   min-height: 480px;
   &__list {
     display: flex;
-    gap: 20px 30px;
+    justify-content: space-between;
+    gap: 20px 0;
     flex-wrap: wrap;
+    @media (max-width: 650px) {
+      justify-content: center;
+    }
   }
   &__empty {
     height: 100%;

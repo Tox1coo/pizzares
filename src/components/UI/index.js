@@ -19,6 +19,8 @@ import RadioList from "@/components/UI/RadioList";
 import RadioListItem from "@/components/UI/RadioListItem";
 import DropList from "@/components/UI/DropList";
 import DropHistoryOrders from "@/components/UI/DropHistoryOrders";
+import IsLoading from "@/components/UI/IsLoading";
+
 export default [
   NavBar,
   CityList,
@@ -41,4 +43,5 @@ export default [
   CarouselItem,
   DropList,
   DropHistoryOrders,
+  IsLoading
 ];

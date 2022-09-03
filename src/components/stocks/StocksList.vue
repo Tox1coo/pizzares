@@ -32,6 +32,14 @@ export default {
 .stocks {
   display: flex;
   justify-content: space-between;
+  gap: 10px 0;
   align-items: center;
+  flex-wrap: wrap;
+  @media (max-width: 630px) {
+    justify-content: center;
+  }
+  @media (max-width: 1200px) {
+    justify-content: space-around;
+  }
 }
 </style>

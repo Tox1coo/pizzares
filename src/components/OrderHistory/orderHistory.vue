@@ -1,7 +1,5 @@
 <template>
-  <ModalAuth :show="true" v-if="!isLoading"
-    ><h1>Идет загрузка...</h1></ModalAuth
-  >
+  <IsLoading v-if="!isLoading"></IsLoading>
 
   <div v-else-if="isLoading" class="history">
     <OrderHistoryItem

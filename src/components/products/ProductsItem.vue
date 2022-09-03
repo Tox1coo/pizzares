@@ -74,8 +74,7 @@ export default {
   display: flex;
   flex-direction: column;
   max-height: 480px;
-  min-width: 300px;
-  max-width: 300px;
+  width: 23%;
   border: 1px solid #f0f0f0;
   background-color: #fff;
   border-radius: 12px;
@@ -86,6 +85,15 @@ export default {
   }
   &-photo {
     position: relative;
+  }
+  @media (max-width: 1215px) {
+    width: 49%;
+  }
+  @media (max-width: 650px) {
+    width: 70%;
+  }
+  @media (max-width: 460px) {
+    width: 100%;
   }
 }
 .price {

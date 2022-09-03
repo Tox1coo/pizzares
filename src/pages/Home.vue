@@ -1,28 +1,26 @@
 <template>
-  <div v-if="isLoading" class="main">
-    <CategoryList :categoryList="categoryList"></CategoryList>
-    <StocksList></StocksList>
-    <FormCity></FormCity>
-    <ListProducts
-      v-for="category in category"
-      :key="category"
-      :productList="getProductList(category)"
-      :categoryName="category"
-    ></ListProducts>
-    <ModalAuth v-model:show="show">
-      <LoginUser
-        v-model:show="show"
-        v-model:visibleModalLogin="visibleModalLogin"
-        v-if="visibleModalLogin"
-      ></LoginUser>
-      <AuthUser
-        v-model:show="show"
-        v-model:visibleModalLogin="visibleModalLogin"
-        v-else
-      ></AuthUser>
-    </ModalAuth>
-    <OrderSideBar> <OrderList /></OrderSideBar>
-  </div>
+  <CategoryList :categoryList="categoryList"></CategoryList>
+  <StocksList></StocksList>
+  <FormCity></FormCity>
+  <ListProducts
+    v-for="category in category"
+    :key="category"
+    :productList="getProductList(category)"
+    :categoryName="category"
+  ></ListProducts>
+  <ModalAuth v-model:show="show">
+    <LoginUser
+      v-model:show="show"
+      v-model:visibleModalLogin="visibleModalLogin"
+      v-if="visibleModalLogin"
+    ></LoginUser>
+    <AuthUser
+      v-model:show="show"
+      v-model:visibleModalLogin="visibleModalLogin"
+      v-else
+    ></AuthUser>
+  </ModalAuth>
+  <OrderSideBar> <OrderList /></OrderSideBar>
 </template>
 
 <script>

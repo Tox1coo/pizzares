@@ -24,7 +24,7 @@ export default {
     scrollToProducts(categoryName) {
       const product = document.getElementById(categoryName.name);
       product.scrollIntoView({
-        block: "center",
+        block: "start",
         inline: "center",
         behavior: "smooth",
       });
@@ -38,8 +38,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   width: 100%;
-  max-height: 105px;
+  gap: 10px 0;
   margin: 30px 0px;
 }
 </style>

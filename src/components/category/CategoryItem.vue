@@ -15,8 +15,8 @@ export default {
 
 <style scoped lang="scss">
 .category__item {
-  width: 135px;
   height: 105px;
+  max-width: 117px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,10 +24,10 @@ export default {
   font-size: 18px;
   color: #191919;
   transition: all 0.2s;
-
   cursor: pointer;
   border: 1px solid #f0f0f0;
   border-radius: 12px;
+  padding: 35px;
   background-color: #fff;
   &:first-child {
     color: #e23535;

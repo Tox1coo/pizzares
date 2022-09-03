@@ -92,10 +92,7 @@ export default {
     async submitAuth() {
       this.v$.$validate();
       if (!this.v$.$error) {
-        if (
-          this.password.search(/[a-zA-Z]/g) != -1 &&
-          this.password.search(/[а-яА-Я]/g) != 0
-        ) {
+        if (this.password.search(/[а-яА-Я]/g) != 0) {
           const userAuth = {
             email: this.email,
             password: this.password,
@@ -146,6 +143,9 @@ export default {
     min-width: 320px;
     padding: 13px 0;
     margin-top: 16px;
+    @media (max-width: 350px) {
+      min-width: 230px;
+    }
   }
   span {
     color: #191919;

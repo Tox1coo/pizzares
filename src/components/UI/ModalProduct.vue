@@ -149,7 +149,10 @@ export default {
   position: fixed;
   z-index: 1000;
   display: flex;
+  overflow: scroll;
   cursor: pointer;
+  padding: 10px;
+
   &__content {
     position: relative;
     padding-top: 25px;
@@ -161,9 +164,16 @@ export default {
     min-height: 50px;
     width: 1070px;
     min-width: 300px;
+    @media (max-width: 890px) {
+      padding: 20px 5px;
+    }
     cursor: default;
     display: flex;
-
+    @media (max-width: 890px) {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
     &-bottom {
       display: flex;
       align-items: center;
@@ -180,6 +190,22 @@ export default {
           color: #a5a5a5;
           font-size: 14px;
           margin-left: 12px;
+        }
+        @media (max-width: 890px) {
+          p {
+            font-size: 17px;
+          }
+          span {
+            margin-left: 30px;
+          }
+        }
+      }
+      @media (max-width: 890px) {
+        margin-top: 20px;
+      }
+      @media (max-width: 890px) {
+        .btn {
+          padding: 13px 30px;
         }
       }
     }
@@ -200,10 +226,16 @@ export default {
       width: 450px;
       height: 450px;
       margin: 90px 60px 90px;
+      @media (max-width: 890px) {
+        margin: 0;
+        width: auto;
+        height: auto;
+      }
     }
     &-add {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
       flex: 1 1 100%;
     }
     h3 {
@@ -252,6 +284,10 @@ export default {
   }
   &:hover {
     transform: rotate(270deg);
+  }
+  @media (max-width: 1200px) {
+    right: 10px;
+    top: -40px;
   }
 }
 </style>

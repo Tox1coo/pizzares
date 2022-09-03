@@ -85,30 +85,21 @@ export default {
     async submitLogin() {
       this.v$.$validate();
       if (!this.v$.$error) {
-        if (
-          this.password.search(/[a-zA-Z]/g) != -1 &&
-          this.password.search(/[а-яА-Я]/g) != 0
-        ) {
-          const userLogin = { email: this.email, password: this.password };
-          await this.login(userLogin);
+        const userLogin = { email: this.email, password: this.password };
+        await this.login(userLogin);
 
-          if (this.errorMessage === null) {
-            this.$emit("update:show", false);
-            this.$emit("update:visibleModalLogin", true);
-            this.setIsAuth(true);
-            this.clearErrorMessage();
-          } else {
-            for (const key in messages) {
-              if (key === this.errorMessage) {
-                this.messageError = messages[key];
-              }
-            }
-            this.visibleError = true;
-            this.clearErrorMessage();
-          }
+        if (this.isAuth) {
+          this.$emit("update:show", false);
+          this.$emit("update:visibleModalLogin", true);
+          this.clearErrorMessage();
         } else {
-          this.errorPassword = "Пароль не должен содержать русских символов";
-          this.errorPasswordLang = true;
+          for (const key in messages) {
+            if (key === this.errorMessage) {
+              this.messageError = messages[key];
+            }
+          }
+          this.visibleError = true;
+          this.clearErrorMessage();
         }
       } else {
         this.errorPassword = this.v$.password.$errors[0].$message;
@@ -117,7 +108,10 @@ export default {
     },
   },
   computed: {
-    ...mapState({ errorMessage: (state) => state.auth.errorMessage }),
+    ...mapState({
+      errorMessage: (state) => state.auth.errorMessage,
+      isAuth: (state) => state.auth.isAuth,
+    }),
     ...mapGetters({ getError: "auth/getError" }),
   },
 };
@@ -137,6 +131,9 @@ export default {
     min-width: 320px;
     padding: 13px 0;
     margin-top: 16px;
+    @media (max-width: 350px) {
+      min-width: 230px;
+    }
   }
   span {
     color: #191919;

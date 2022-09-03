@@ -1,15 +1,18 @@
 <template>
-  <NavBar :currentCity="currentCity" />
+  <div v-if="isLoading" class="main">
+    <NavBar :currentCity="currentCity" />
 
-  <div class="container">
-    <router-view />
+    <div class="container">
+      <router-view />
+    </div>
+
+    <FooterPage></FooterPage>
   </div>
-
-  <FooterPage></FooterPage>
+  <IsLoading v-else></IsLoading>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   data() {
@@ -19,32 +22,34 @@ export default {
   },
   created() {
     this.loggedUser();
-
-    this.fetchCategory();
-    this.fetchCity();
-    this.fetchProducts();
-    this.restaurantListAppend();
   },
 
   methods: {
     ...mapActions({
       loggedUser: "auth/loggedUser",
-      fetchCity: "city/fetchCity",
-      fetchCategory: "category/fetchCategory",
-      fetchProducts: "product/fetchProducts",
-      restaurantListAppend: "orders/restaurantListAppend",
+    }),
+  },
+  computed: {
+    ...mapState({
+      isLoading: (state) => state.product.isLoading,
     }),
   },
 };
 </script>
 <style lang="scss">
 .container {
-  width: 1320px;
+  max-width: 1320px;
   padding: 0px 15px;
   margin: 0 auto;
-  flex: 1 1 100%;
+  flex: 1;
+  @media (max-width: 360px) {
+    padding: 0px 5px;
+  }
 }
-
+#app {
+  position: relative;
+  height: 100vh;
+}
 *,
 *::before,
 *::after {
@@ -57,5 +62,11 @@ hr {
 }
 html {
   background-color: #f9f9f9;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

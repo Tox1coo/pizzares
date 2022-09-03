@@ -29,7 +29,7 @@ export default {
   position: fixed;
   z-index: 1000;
   display: flex;
-
+  padding: 10px;
   cursor: pointer;
   &__content {
     position: relative;
@@ -46,6 +46,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    @media (max-width: 370px) {
+      padding: 0;
+    }
   }
 }
 .close {
@@ -75,6 +78,10 @@ export default {
   }
   &:hover {
     transform: rotate(270deg);
+  }
+  @media (max-width: 1200px) {
+    right: 10px;
+    top: -40px;
   }
 }
 </style>

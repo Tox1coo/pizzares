@@ -79,9 +79,6 @@ export const products = {
         .catch((error) => {
           console.error(error);
         })
-        .finally(() => {
-          commit("setIsLoading", true);
-        });
 
       get(child(storageData, `2/Category`))
         .then((snapshot) => {
@@ -113,6 +110,8 @@ export const products = {
           .finally(() => {
             commit("setProductList", product);
             commit("setCopyProductList", product);
+            commit("setIsLoading", true);
+
           });
       });
     },

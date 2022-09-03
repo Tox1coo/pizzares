@@ -319,7 +319,9 @@ export default {
   },
   mounted() {
     this.email = this.currentUser.email;
-    this.phone = this.currentUser.phoneNumber || "";
+    this.phone = `+${
+      this.currentUser.phoneNumber || this.userInfo.settings.phone
+    }`;
     this.username = this.userInfo?.username || "";
   },
   computed: {

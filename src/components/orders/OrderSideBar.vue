@@ -50,12 +50,17 @@ export default {
   display: flex;
   flex-direction: column;
   width: 420px;
-  padding: 32px 20px 0px 20px;
+  padding: 32px 20px 0px;
   position: relative;
   height: 100vh;
   background-color: #fff;
-
+  @media (max-width: 420px) {
+    padding: 32px 5px 0px;
+  }
   cursor: default;
+  @media (max-width: 420px) {
+    width: 100%;
+  }
 }
 .close {
   cursor: pointer;

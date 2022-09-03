@@ -46,6 +46,13 @@ export default {
       width: 94px;
     }
     margin-right: 16px;
+    @media (max-width: 420px) {
+      margin-right: 5px;
+    }
+  }
+  @media (max-width: 420px) {
+    width: 100%;
+    padding: 10px;
   }
   &-info {
     width: 100%;

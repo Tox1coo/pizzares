@@ -9,7 +9,6 @@ import {
   set,
   push,
 } from "firebase/database";
-import { firebaseConfig } from "@/store/config";
 
 export const orders = {
   state: () => ({

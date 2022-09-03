@@ -18,6 +18,7 @@ export const auth = {
     userInfo: null,
     errorMessage: null,
     orderNumber: 1,
+    isLoading: false,
   }),
   mutations: {
     setVisibleModal(state, visibleModal) {
@@ -41,6 +42,9 @@ export const auth = {
     setOrderNumber(state, orderNumber) {
       state.orderNumber = orderNumber;
     },
+    updateIsLoading(state, isLoading) {
+      state.isLoading = isLoading;
+    },
   },
   actions: {
     async login({ dispatch, commit }, { email, password }) {
@@ -49,7 +53,7 @@ export const auth = {
       await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const db = getDatabase();
-
+          console.log(userCredential);
           const dbRef = ref(getDatabase());
           get(child(dbRef, `3/users/${userCredential.user.uid}`))
             .then((snapshot) => {
@@ -59,9 +63,12 @@ export const auth = {
                 console.log("No data available");
               }
             })
-            .catch((error) => { });
+            .catch((error) => {
+              console.dir(error);
+            });
           commit("setCurrentUser", userCredential.user);
           dispatch("updateOrderNumber");
+          commit("setIsAuth", true);
         })
         .catch((error) => {
           commit("setErrorMessage", error.code);
@@ -114,7 +121,7 @@ export const auth = {
         });
     },
 
-    async logoutUser({ dispatch, commit }) {
+    logoutUser({ dispatch, commit }) {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
@@ -127,9 +134,9 @@ export const auth = {
         });
     },
 
-    async loggedUser({ dispatch, commit }) {
+    loggedUser({ dispatch, commit }) {
       const auth = getAuth();
-      await onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, (user) => {
         if (user) {
           const db = getDatabase();
           const dbRef = ref(db);
@@ -147,9 +154,15 @@ export const auth = {
           commit("setCurrentUser", user);
           commit("setIsAuth", true);
         }
+
+        dispatch("category/fetchCategory", null, { root: true });
+        dispatch("city/fetchCity", null, { root: true });
+        dispatch("product/fetchProducts", null, { root: true });
+        dispatch("orders/restaurantListAppend", null, { root: true });
+
       });
     },
-    async updateOrderNumber({ commit }) {
+    updateOrderNumber({ commit }) {
       const db = getDatabase();
       const dbRef = ref(db, "3/orderNumber");
       onValue(dbRef, (snapshot) => {

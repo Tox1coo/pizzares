@@ -69,7 +69,6 @@
             </div>
           </div>
         </div>
-        <hr />
         <div class="header__inner-bottom panel">
           <div @click="$router.push('/')" class="title">
             <img :src="require(`@/assets/pizza.png`)" class="img" />
@@ -178,17 +177,18 @@ img {
 .header {
   width: 100%;
   height: 105px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
+
   flex: 0 1;
   margin-top: 10px;
   background-color: #fff;
   &__inner {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
     width: 100%;
     &-bottom {
-      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #ccc;
     }
   }
   border-bottom: 1px solid rgba(#ccc, 0.3);
@@ -219,6 +219,12 @@ hr {
     span:nth-child(4) {
       margin-left: 40px;
     }
+    @media (max-width: 970px) {
+      svg,
+      span {
+        display: none;
+      }
+    }
   }
 
   &__right {
@@ -227,6 +233,12 @@ hr {
     position: relative;
     span {
       margin-right: 40px;
+      @media (max-width: 970px) {
+        margin-right: 10px;
+      }
+      @media (max-width: 490px) {
+        display: none;
+      }
     }
   }
 }

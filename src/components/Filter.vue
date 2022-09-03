@@ -128,9 +128,15 @@ export default {
       border-top: 2px solid #f0f0f0;
     }
   }
+  @media (max-width: 500px) {
+    width: 100%;
+  }
   cursor: default;
   &-btn {
     padding: 13px 70.5px;
+    @media (max-width: 500px) {
+      padding: 13px 30px;
+    }
   }
 }
 .background {
