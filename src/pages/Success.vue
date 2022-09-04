@@ -61,7 +61,7 @@ export default {
     }
   }
   &__btn {
-    padding: 13px 32px;
+    padding: 13px 30px;
   }
 }
 </style>

@@ -90,6 +90,20 @@ export default {
     &--next {
       right: -8%;
     }
+    @media (max-width: 960px) {
+      top: -50px;
+      transform: translateY(0);
+      &--prev {
+        right: 50px;
+        left: auto;
+      }
+      &--next {
+        right: 5px;
+      }
+    }
+  }
+  @media (max-width: 880px) {
+    display: none;
   }
 }
 </style>

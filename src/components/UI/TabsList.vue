@@ -45,6 +45,10 @@ export default {
     border-radius: 6px;
     cursor: pointer;
     margin-top: 25px;
+
+    @media (max-width: 700px) {
+      margin-top: 0px;
+    }
   }
 }
 </style>

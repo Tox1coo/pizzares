@@ -7,7 +7,6 @@
         <MyInput
           :style="{
             marginTop: `${-2}px`,
-            width: `${320}px`,
           }"
           v-model="promo"
           :placeholderInput="'Промокод'"
@@ -79,6 +78,9 @@ export default {
 
   &__subtitle {
     margin-bottom: 24px;
+    @media (max-width: 880px) {
+      display: none;
+    }
   }
   &__promo {
     background-color: #fff;
@@ -90,6 +92,12 @@ export default {
     align-items: center;
     margin-bottom: 30px;
     justify-content: space-between;
+    @media (max-width: 500px) {
+      padding: 16px 10px;
+    }
+    .form {
+      width: 100%;
+    }
     &-send {
       width: 320px;
 
@@ -106,6 +114,9 @@ export default {
         font-weight: 600;
         color: #ff7010;
         font-size: 20px;
+        @media (max-width: 500px) {
+          font-size: 16px;
+        }
       }
     }
   }

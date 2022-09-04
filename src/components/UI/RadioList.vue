@@ -1,21 +1,24 @@
 <template>
   <div class="form">
-    <div
-      v-for="radioListItem in radioList"
-      :key="radioListItem"
-      class="form_radio"
-    >
-      <input
-        @click="checkInput($event)"
-        :id="`radio-${radioListItem.id}`"
-        :name="name"
-        checked
-        type="radio"
-        :value="radioListItem.title"
-      />
-      <label :for="`radio-${radioListItem.id}`">{{
-        radioListItem.title
-      }}</label>
+    <div class="form_radio-list">
+      <div
+        v-for="radioListItem in radioList"
+        :key="radioListItem"
+        class="form_radio"
+      >
+        <input
+          @click="checkInput($event)"
+          :id="`radio-${radioListItem.id}`"
+          :name="name"
+          checked
+          type="radio"
+          :value="radioListItem.title"
+        />
+        <label :for="`radio-${radioListItem.id}`">{{
+          radioListItem.title
+        }}</label>
+      </div>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -47,11 +50,18 @@ export default {
 <style scoped lang="scss">
 .form {
   display: flex;
+  align-items: center;
   gap: 25px;
   margin-bottom: 10px;
 }
 .form_radio {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  &-list {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 0 50px;
+  }
 }
 .form_radio input[type="radio"] {
   display: none;

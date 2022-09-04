@@ -96,7 +96,7 @@ export default {
     justify-content: space-between;
     gap: 20px 0;
     flex-wrap: wrap;
-    @media (max-width: 650px) {
+    @media (max-width: 850px) {
       justify-content: center;
     }
   }

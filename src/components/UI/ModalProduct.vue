@@ -162,10 +162,13 @@ export default {
     background: white;
     border-radius: 24px;
     min-height: 50px;
-    width: 1070px;
     min-width: 300px;
     @media (max-width: 890px) {
+      padding: 20px 20px;
+    }
+    @media (max-width: 450px) {
       padding: 20px 5px;
+      border-radius: 10px;
     }
     cursor: default;
     display: flex;
@@ -200,10 +203,10 @@ export default {
           }
         }
       }
+
       @media (max-width: 890px) {
         margin-top: 20px;
-      }
-      @media (max-width: 890px) {
+
         .btn {
           padding: 13px 30px;
         }
@@ -236,7 +239,14 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      flex: 1 1 100%;
+      flex: 1 1;
+      @media (max-width: 890px) {
+        flex-wrap: nowrap;
+        overflow: scroll;
+      }
+      @media (max-width: 450px) {
+        gap: 10px;
+      }
     }
     h3 {
       margin-top: 25px;
@@ -288,6 +298,13 @@ export default {
   @media (max-width: 1200px) {
     right: 10px;
     top: -40px;
+  }
+  @media (max-width: 890px) {
+    right: 5px;
+    top: 5px;
+    span {
+      background-color: #000;
+    }
   }
 }
 </style>

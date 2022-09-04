@@ -190,6 +190,11 @@ img {
       padding-top: 15px;
       border-top: 1px solid #ccc;
     }
+    @media (max-width: 470px) {
+      h2 {
+        display: none;
+      }
+    }
   }
   border-bottom: 1px solid rgba(#ccc, 0.3);
 }

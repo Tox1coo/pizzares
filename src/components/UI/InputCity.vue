@@ -45,6 +45,9 @@ form {
   flex: 1;
   height: 50px;
   margin-right: 15px;
+  @media (max-width: 400px) {
+    margin-right: 5px;
+  }
 }
 input {
   width: 100%;
@@ -53,6 +56,7 @@ input {
   border-radius: 5px;
   outline: 1px solid #ccc;
   padding: 0px 35px;
+  min-width: 190px;
   &:focus {
     border: 1px solid #000;
   }

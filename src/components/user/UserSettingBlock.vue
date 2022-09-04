@@ -222,7 +222,7 @@ export default {
       v$: useVuelidate(),
 
       email: this.user.email || "",
-      phone: '',
+      phone: "",
       username: this.userInfo?.username || this.user.displayName || "",
       dateOfBirth: this.userInfo?.dateofBirth || "",
       check: false,
@@ -337,15 +337,13 @@ export default {
           this.username.length > 0 ||
           this.email.length > 0
         ) {
-
-          this.newUserInfo.phone = this.phone || '';
+          this.newUserInfo.phone = this.phone || "";
           this.newUserInfo.username = this.username;
-          this.newUserInfo.email = this.email || '';
+          this.newUserInfo.email = this.email || "";
           this.newUserInfo.oldNumberPhone = this.userInfo.settings.phone;
           this.getNewUserInfo(this.newUserInfo);
           this.error = "";
           this.changeSetting = false;
-
 
           /*
           if(this.phone !== this.user.phoneNumber) {
@@ -418,6 +416,7 @@ export default {
     &-items-info {
       margin-top: 16px;
       flex-wrap: wrap;
+      gap: 20px;
       & div {
         p {
           margin-top: 4px;

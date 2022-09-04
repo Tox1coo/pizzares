@@ -35,17 +35,25 @@ export default {
   border: 1px solid #f0f0f0;
   border-radius: 12px;
   padding: 16px;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   background-color: #fff;
   margin-bottom: 16px;
   &-image {
     img {
-      width: 120px;
+      min-width: 100px;
+      width: 100%;
+      max-width: 120px;
     }
     margin-right: 20px;
+    @media (max-width: 500px) {
+      margin-right: 0px;
+    }
   }
   &-info {
-    flex: 1 1 100%;
+    flex: 1 1;
     max-width: 460px;
   }
   &-counter {
@@ -53,7 +61,7 @@ export default {
     display: flex;
     align-items: center;
     span {
-      margin-left: 40px;
+      margin-left: 20px;
       font-size: 20px;
       color: #ff7010;
       font-weight: 600;

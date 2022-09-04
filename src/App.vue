@@ -41,9 +41,12 @@ export default {
   max-width: 1320px;
   padding: 0px 15px;
   margin: 0 auto;
-  flex: 1;
+  flex: 0 1;
   @media (max-width: 360px) {
     padding: 0px 5px;
+  }
+  @media (max-width: 880px) {
+    margin: 0;
   }
 }
 #app {

@@ -1,18 +1,16 @@
 <template>
   <div class="setting">
-    <div class="container">
-      <div class="setting__inner">
-        <div class="setting__header">
-          <h1>Моя аккаунт</h1>
-          <TabsList
-            class="setting__tabs"
-            @addInfoTab="activeSettingButton"
-            :tabsList="userList"
-          ></TabsList>
-        </div>
-        <OrderHistory v-if="activeButton === 'История заказов'"></OrderHistory>
-        <UserSetting v-else-if="activeButton === 'Настройки'"></UserSetting>
+    <div class="setting__inner">
+      <div class="setting__header">
+        <h1>Моя аккаунт</h1>
+        <TabsList
+          class="setting__tabs"
+          @addInfoTab="activeSettingButton"
+          :tabsList="userList"
+        ></TabsList>
       </div>
+      <OrderHistory v-if="activeButton === 'История заказов'"></OrderHistory>
+      <UserSetting v-else-if="activeButton === 'Настройки'"></UserSetting>
     </div>
   </div>
   <OrderSideBar> <OrderList /></OrderSideBar>
@@ -45,13 +43,22 @@ export default {
 .setting {
   &__inner {
     width: 850px;
-    margin: 0 auto;
+    min-height: 50vh;
+    @media (max-width: 880px) {
+      width: 100%;
+    }
   }
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 24px;
+    gap: 15px;
+    @media (max-width: 460px) {
+      h1 {
+        font-size: 20px;
+      }
+    }
   }
   &__tabs {
     flex: 1 1;

@@ -136,32 +136,29 @@
           v-model:value="timeWay"
           :name="'way'"
           :radioList="radioOrderTime"
-        ></RadioList>
-        <div
-          v-show="timeWay === 'По времени'"
-          class="form__order-way-inputs data"
         >
-          <MyInput
-            class="form__order-way-input"
-            :style="{ width: `${160}px` }"
-            :placeholderInput="'Дата'"
-            :typeInput="'date'"
-            :errorMessage="v$.wayTime.currentDate.$errors[0]?.$message"
-            :error="v$.wayTime.currentDate.$error"
-            v-model="wayTime.currentDate"
-          >
-          </MyInput>
-          <MyInput
-            class="form__order-way-input"
-            :style="{ width: `${160}px` }"
-            :placeholderInput="'Время'"
-            :typeInput="'time'"
-            :errorMessage="v$.wayTime.currentTime.$errors[0]?.$message"
-            :error="v$.wayTime.currentTime.$error"
-            v-model="wayTime.currentTime"
-          >
-          </MyInput>
-        </div>
+          <div v-show="timeWay === 'По времени'" class="form__order-way-inputs">
+            <MyInput
+              class="form__order-way-input"
+              :style="{ width: `${160}px` }"
+              :placeholderInput="'Дата'"
+              :typeInput="'date'"
+              :errorMessage="v$.wayTime.currentDate.$errors[0]?.$message"
+              :error="v$.wayTime.currentDate.$error"
+              v-model="wayTime.currentDate"
+            >
+            </MyInput>
+            <MyInput
+              class="form__order-way-input"
+              :style="{ width: `${160}px` }"
+              :placeholderInput="'Время'"
+              :typeInput="'time'"
+              :errorMessage="v$.wayTime.currentTime.$errors[0]?.$message"
+              :error="v$.wayTime.currentTime.$error"
+              v-model="wayTime.currentTime"
+            >
+            </MyInput></div
+        ></RadioList>
       </div>
     </RegistrationOrderFormBlock>
     <RegistrationOrderFormBlock>
@@ -183,19 +180,19 @@
           v-model:value="typeDeal"
           :name="'deal'"
           :radioList="OrdertypeDeal"
-        ></RadioList>
-        <MyInput
-          v-show="typeDeal === 'Сдача с'"
-          class="form__order-deal-input"
-          :style="{ width: `${160}px` }"
-          :placeholderInput="'0'"
-          :typeInput="'text'"
-          v-model="deal"
-          :errorMessage="v$.deal.$errors[0]?.$message"
-          :error="v$.deal.$error"
         >
-          <span>₽ </span></MyInput
-        >
+          <MyInput
+            v-show="typeDeal === 'Сдача с'"
+            class="form__order-deal-input"
+            :style="{ width: `${160}px` }"
+            :placeholderInput="'0'"
+            :typeInput="'text'"
+            v-model="deal"
+            :errorMessage="v$.deal.$errors[0]?.$message"
+            :error="v$.deal.$error"
+          >
+          </MyInput>
+        </RadioList>
       </div>
     </RegistrationOrderFormBlock>
     <RegistrationOrderFormBlock>
@@ -433,25 +430,29 @@ export default {
     margin-bottom: 20px;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     &-item {
       width: 270px;
       height: 75px;
       margin-top: 8px;
     }
+    .form {
+      margin-top: 0;
+    }
   }
   &-deal {
     position: relative;
     &-input {
-      position: absolute;
-      bottom: 0;
-      left: 25%;
       span {
         position: absolute;
         top: 50%;
         right: 16px;
         transform: translateY(-50%);
         color: #a5a5a5;
+      }
+      .form {
+        margin-top: 0;
       }
     }
   }
@@ -461,7 +462,7 @@ export default {
       resize: none;
       border: 1px solid #ccc;
       border-radius: 6px;
-      width: 850px;
+      width: 100%;
       height: 200px;
       padding-top: 13px;
       padding-left: 16px;
@@ -479,6 +480,12 @@ export default {
     &-inputs {
       display: flex;
       gap: 20px;
+      flex-wrap: wrap;
+      @media (max-width: 725px) {
+        .form {
+          margin-top: 0;
+        }
+      }
     }
     &-radio {
       h4 {
@@ -510,22 +517,28 @@ export default {
         font-weight: 600;
         color: #ff7010;
         font-size: 20px;
+        @media (max-width: 500px) {
+          font-size: 17px;
+        }
       }
+    }
+    @media (max-width: 500px) {
+      padding: 16px 10px;
     }
   }
 }
-.data {
-  position: absolute;
-  bottom: 0;
-  left: 35%;
-}
+
 .way {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   margin-bottom: 16px;
   h2 {
-    flex: 1 1;
+    flex: 1 0;
+    @media (max-width: 500px) {
+      flex: 0 1;
+    }
   }
   &__list {
     flex: 1 1;
@@ -535,6 +548,7 @@ export default {
 .delivery {
   &__form {
     min-width: 100%;
+    margin-bottom: 10px;
   }
 }
 </style>

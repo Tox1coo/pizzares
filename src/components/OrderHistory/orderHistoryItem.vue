@@ -10,29 +10,33 @@
         }"
         class="vertical"
       ></div>
+      <div class="history__item-top-items">
+        <div class="history__item-top-item">
+          <span>Заказ</span>
 
-      <div class="history__item-top-item">
-        <span>Заказ</span>
+          <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
+            №{{ historyItem.orderNumber }}
+          </p>
+        </div>
+        <div class="history__item-top-item">
+          <span>Cумма заказа</span>
+          <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
+            {{ historyItem.totalSumOrder }} ₽
+          </p>
+        </div>
+      </div>
 
-        <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
-          №{{ historyItem.orderNumber }}
-        </p>
-      </div>
-      <div class="history__item-top-item">
-        <span>Cумма заказа</span>
-        <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
-          {{ historyItem.totalSumOrder }} ₽
-        </p>
-      </div>
-      <div class="history__item-top-item">
-        <span>Статус</span>
-        <p>{{ historyItem.status }}</p>
-      </div>
-      <div class="history__item-top-item">
-        <span>Оплачено</span>
-        <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
-          {{ historyItem.payment }}
-        </p>
+      <div class="history__item-top-items">
+        <div class="history__item-top-item">
+          <span>Статус</span>
+          <p>{{ historyItem.status }}</p>
+        </div>
+        <div class="history__item-top-item">
+          <span>Оплачено</span>
+          <p :class="{ cancel__text: historyItem.status === 'Отмена' }">
+            {{ historyItem.payment }}
+          </p>
+        </div>
       </div>
       <div :class="{ 'arrow-active': activeDropList }" class="arrow"></div>
     </div>
@@ -84,6 +88,9 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 8px rgba($color: #000000, $alpha: 0.1);
   margin-bottom: 20px;
+  @media (max-width: 880px) {
+    width: 100%;
+  }
   &-top {
     cursor: pointer;
 
@@ -92,7 +99,7 @@ export default {
     border-bottom: 1px solid #f0f0f0;
     align-items: center;
     position: relative;
-
+    padding-left: 20px;
     &-item {
       font-family: "SF Pro Text";
       margin-bottom: 16px;
@@ -104,7 +111,15 @@ export default {
         font-size: 14px;
         margin-bottom: 4px;
       }
-      margin-left: 20px;
+    }
+
+    &-items {
+      flex: 1;
+      display: flex;
+      justify-content: space-around;
+      @media (max-width: 530px) {
+        flex-direction: column;
+      }
     }
   }
 
@@ -113,6 +128,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-top: 12px;
+    gap: 15px;
     img {
       border-radius: 50%;
       width: 40px;
@@ -125,7 +141,7 @@ export default {
 }
 .vertical {
   width: 4px;
-  height: 44px;
+  height: 80%;
   position: absolute;
   left: 0;
   top: 0;

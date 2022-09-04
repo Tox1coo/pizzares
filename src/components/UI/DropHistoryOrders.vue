@@ -5,20 +5,26 @@
         <div
           v-for="dropItem in dropList"
           :key="dropItem.id"
-          class="drop__list-item"
+          class="drop__list-inner"
         >
-          <div class="drop__list-item-left">
-            <img :src="dropItem.image" :alt="dropItem.title" />
-            <h4>{{ dropItem.title }}</h4>
+          <div class="drop__list-items">
+            <div class="drop__list-item-left">
+              <img :src="dropItem.image" :alt="dropItem.title" />
+              <h4>{{ dropItem.title }}</h4>
+            </div>
+
+            <p class="drop__list-item-type" v-if="dropItem?.type">
+              {{ dropItem.type }}, {{ dropItem.size }}
+            </p>
+            <p class="drop__list-item-type" v-else></p>
           </div>
 
-          <p class="drop__list-item-type" v-if="dropItem?.type">
-            {{ dropItem.type }}, {{ dropItem.size }}
-          </p>
-          <p class="drop__list-item-type" v-else></p>
-
-          <div class="drop__list-count">{{ dropItem.countInOrder }} товар</div>
-          <p class="drop__list-allprice">{{ dropItem.allPrice }} ₽</p>
+          <div class="drop__list-items">
+            <div class="drop__list-count">
+              {{ dropItem.countInOrder }} товар
+            </div>
+            <p class="drop__list-allprice">{{ dropItem.allPrice }} ₽</p>
+          </div>
         </div>
       </div>
       <a @click="repeatOrder" class="drop__btn">Повторить заказ</a>
@@ -90,23 +96,39 @@ export default {
     flex-direction: column;
     border-bottom: 1px solid #f0f0f0;
     padding-bottom: 12px;
-    &-item {
+    &-items {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 12px;
+      gap: 15px;
+      @media (max-width: 700px) {
+        width: 100%;
+      }
+    }
+    &-item {
       &-left {
         display: flex;
         align-items: center;
         min-width: 315px;
+        @media (max-width: 530px) {
+          min-width: auto;
+          font-size: 14px;
+        }
+        img {
+          border-radius: 50%;
+          width: 40px;
+          margin-right: 16px;
+          @media (max-width: 700px) {
+            margin-right: 5px;
+          }
+        }
       }
       &-type {
         min-width: 150px;
-      }
-      img {
-        border-radius: 50%;
-        width: 40px;
-        margin-right: 16px;
+        @media (max-width: 530px) {
+          min-width: auto;
+          font-size: 14px;
+        }
       }
     }
     &-count {
@@ -119,7 +141,20 @@ export default {
       color: #ff7010;
       font-weight: 600;
     }
+    &-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      @media (max-width: 700px) {
+        justify-content: center;
+        flex-direction: column;
+      }
+    }
   }
+
   &__btn {
     color: #ff7010;
     display: flex;

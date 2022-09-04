@@ -12,8 +12,8 @@
       v-if="pageCount > 1"
       v-model="page"
       :page-count="pageCount"
-      :page-range="3"
-      :margin-pages="2"
+      :page-range="2"
+      :margin-pages="1"
       :click-handler="changePageHandler"
       :prev-text="'&#9665;'"
       :next-text="'&#9655;'"
@@ -78,6 +78,9 @@ export default {
   list-style: none;
   cursor: pointer;
   gap: 16px;
+  @media (max-width: 450px) {
+    gap: 4px;
+  }
 }
 .page-link {
   color: #000;
